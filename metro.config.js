@@ -9,7 +9,7 @@ try {
   isExpo =
     Constants.executionEnvironment === "standalone" ||
     Constants.executionEnvironment === "storeClient"
-} catch {}
+} catch { }
 
 if (isExpo) {
   /**
@@ -19,7 +19,21 @@ if (isExpo) {
    * For one idea on how to support symlinks in Expo, see:
    * https://github.com/infinitered/ignite/issues/1904#issuecomment-1054535068
    */
-  metroConfig = getDefaultExpoConfig(__dirname)
+  const config = getDefaultExpoConfig(__dirname);
+
+  const { transformer, resolver } = config;
+
+  config.transformer = {
+    ...transformer,
+    babelTransformerPath: require.resolve("react-native-svg-transformer")
+  };
+  config.resolver = {
+    ...resolver,
+    assetExts: resolver.assetExts.filter((ext) => ext !== "svg"),
+    sourceExts: [...resolver.sourceExts, "svg"]
+  };
+
+  metroConfig = config;
 } else {
   /**
    * Vanilla metro config - we're using a custom metro config because we want to support symlinks

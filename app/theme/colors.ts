@@ -1,14 +1,20 @@
 // TODO: write documentation for colors and palette in own markdown file and add links from here
 
 const palette = {
+  main100: "#4489ea",
+  main200: "#0049b0",
+  main300: "#0049b0",
+  main400: "#0049b0",
+  main500: "#0049b0",
+
   neutral100: "#FFFFFF",
   neutral200: "#F4F2F1",
   neutral300: "#D7CEC9",
   neutral400: "#B6ACA6",
   neutral500: "#978F8A",
   neutral600: "#564E4A",
-  neutral700: "#3C3836",
-  neutral800: "#191015",
+  neutral700: "#363637",
+  neutral800: "#1C1C1E",
   neutral900: "#000000",
 
   primary100: "#F4E0D9",
@@ -51,15 +57,15 @@ export const colors = {
   /**
    * The default text color in many components.
    */
-  text: palette.neutral800,
+  text: palette.neutral200,
   /**
    * Secondary text information.
    */
-  textDim: palette.neutral600,
+  textDim: palette.neutral300,
   /**
    * The default color of the screen background.
    */
-  background: palette.neutral200,
+  background: palette.neutral900,
   /**
    * The default border color.
    */

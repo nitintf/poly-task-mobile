@@ -11,6 +11,8 @@ import { colors } from "app/theme"
 
 export type AppStackParamList = {
   Home: undefined
+  SignIn: undefined
+  AccountInfo: undefined
 }
 
 const exitRoutes = Config.exitRoutes
@@ -31,18 +33,20 @@ const AppStack = observer(function AppStack() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
-      initialRouteName={"Login"}
+      initialRouteName={"SignIn"}
     >
-      {/* {isAuthenticated ? (
+      {isAuthenticated ? (
         <>
-          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-          <Stack.Screen name="Demo" component={DemoNavigator} />
+          <Stack.Screen name="Home" component={Screens.HomeScreen} />
+          <Stack.Group screenOptions={{ presentation: "modal", headerShown: false }}>
+            <Stack.Screen name="AccountInfo" component={Screens.AccountInfoScreen} />
+          </Stack.Group>
         </>
       ) : (
         <>
+          <Stack.Screen name="SignIn" component={Screens.LoginScreen} />
         </>
-      )} */}
-      <Stack.Screen name="" component={Screens.LoginScreen} />
+      )}
     </Stack.Navigator>
   )
 })
