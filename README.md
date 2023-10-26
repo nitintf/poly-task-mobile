@@ -5,7 +5,9 @@
 
 Poly Task Management is a cross-platform task management application built for both Android and iOS. It's designed to help users manage their tasks efficiently and effectively.
 
-![Screenshot](assets/docs//894shots_so.png)
+![Screenshot](docs//894shots_so.png)
+
+More [Screenshots](docs/)
 
 ## Tech Stack
 
@@ -25,6 +27,9 @@ The project has a standard React Native project structure with some additional d
 
 - `android/` and `ios/`: These directories contain all the code needed to run your app on Android and iOS respectively.
 - `app/`: This directory contains all the JavaScript code for the app, including components, screens, and state management.
+- `app/config/`: This directory contains all config for all the enviorments.
+- `app/models/`: This directory contains all the MobX State tree models and its utilities.
+- `app/screens/`: This directory contains all the React Native Screens.
 - `app/components/`: This directory contains all the reusable React components.
 - `app/devtools/`: This directory contains configuration for Reactotron, a tool for inspecting your React and React Native applications.
 - `assets/`: This directory contains all the static assets (images, fonts, etc.) used in the project.
