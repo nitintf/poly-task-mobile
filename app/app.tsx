@@ -1,16 +1,13 @@
 import "./i18n"
 import "./utils/ignoreWarnings"
-import { useFonts } from "expo-font"
 import React from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
 import * as Linking from "expo-linking"
 import { ApplicationProvider } from "@ui-kitten/components"
 import * as eva from "@eva-design/eva"
 import { useInitialRootStore } from "./models"
-import { AppNavigator, useNavigationPersistence } from "./navigators"
+import { AppNavigator } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
-import * as storage from "./utils/storage"
-import { customFontsToLoad } from "./theme"
 import Config from "./config"
 if (__DEV__) {
   require("./devtools/ReactotronConfig.ts")
@@ -20,11 +17,6 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
-const config = {
-  screens: {
-    Home: "home",
-  },
-}
 
 interface AppProps {
   hideSplashScreen: () => Promise<void>
@@ -35,13 +27,6 @@ interface AppProps {
  */
 function App(props: AppProps) {
   const { hideSplashScreen } = props
-  const {
-    initialNavigationState,
-    onNavigationStateChange,
-    isRestored: isNavigationStateRestored,
-  } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY)
-
-  const [areFontsLoaded] = useFonts(customFontsToLoad)
 
   const { rehydrated } = useInitialRootStore(() => {
     // This runs after the root store has been initialized and rehydrated.
@@ -59,11 +44,10 @@ function App(props: AppProps) {
   // In iOS: application:didFinishLaunchingWithOptions:
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
-  if (!rehydrated || !isNavigationStateRestored || !areFontsLoaded) return null
+  if (!rehydrated) return null
 
   const linking = {
     prefixes: [prefix],
-    config,
   }
 
   // otherwise, we're ready to render the app
@@ -71,11 +55,7 @@ function App(props: AppProps) {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
         <ApplicationProvider {...eva} theme={eva.light}>
-          <AppNavigator
-            linking={linking}
-            initialState={initialNavigationState}
-            onStateChange={onNavigationStateChange}
-          />
+          <AppNavigator linking={linking} />
         </ApplicationProvider>
       </ErrorBoundary>
     </SafeAreaProvider>

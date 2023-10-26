@@ -1,11 +1,11 @@
-// TODO: write documentation for colors and palette in own markdown file and add links from here
-
 const palette = {
   main100: "#4489ea",
   main200: "#0049b0",
   main300: "#0049b0",
   main400: "#0049b0",
   main500: "#0049b0",
+
+  ghost: "#0049b070",
 
   neutral100: "#FFFFFF",
   neutral200: "#F4F2F1",
@@ -14,6 +14,7 @@ const palette = {
   neutral500: "#978F8A",
   neutral600: "#564E4A",
   neutral700: "#363637",
+  neutral750: "#2c2c2c",
   neutral800: "#1C1C1E",
   neutral900: "#000000",
 

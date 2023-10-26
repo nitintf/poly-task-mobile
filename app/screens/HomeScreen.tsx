@@ -7,15 +7,18 @@ import { colors, spacing } from "app/theme"
 import { formatDate } from "app/utils/formatDate"
 import { Avatar, ProgressBar } from "@ui-kitten/components"
 import { FilterIcon, SearchIcon } from "app/components/icons"
+import { useStores } from "app/models"
 
 interface HomeScreenProps extends AppStackScreenProps<"Home"> {}
 
 export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ navigation }) {
+  const { authenticationStore } = useStores()
+
   return (
     <Screen contentContainerStyle={$screenContentContainer} style={$root} preset="auto">
       <View style={$topContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("AccountInfo")}>
-          <Avatar source={require("../../assets/images/avatar.jpeg")} size="medium" />
+        <TouchableOpacity onPress={() => navigation.navigate("AccountSetting")}>
+          <Avatar source={{ uri: authenticationStore.user?.picture }} size="small" />
         </TouchableOpacity>
         <View style={$iconContainer}>
           <FilterIcon />

@@ -158,12 +158,7 @@ const $viewPresets = {
     },
   ] as StyleProp<ViewStyle>,
 
-  filled: [$baseViewStyle, { backgroundColor: colors.palette.neutral300 }] as StyleProp<ViewStyle>,
-
-  reversed: [
-    $baseViewStyle,
-    { backgroundColor: colors.palette.neutral800 },
-  ] as StyleProp<ViewStyle>,
+  ghost: [$baseViewStyle, { backgroundColor: colors.palette.ghost }] as StyleProp<ViewStyle>,
 
   outlined: [
     $baseViewStyle,
@@ -175,24 +170,21 @@ const $viewPresets = {
 
 const $textPresets: Record<Presets, StyleProp<TextStyle>> = {
   default: $baseTextStyle,
-  filled: $baseTextStyle,
-  reversed: [$baseTextStyle, { color: colors.palette.neutral100 }],
+  ghost: [$baseTextStyle, { color: colors.palette.neutral200 }],
   outlined: [$baseTextStyle, { color: colors.palette.neutral200 }],
   link: [$baseTextStyle, { color: colors.palette.main100 }],
 }
 
 const $pressedViewPresets: Record<Presets, StyleProp<ViewStyle>> = {
   default: { backgroundColor: colors.palette.neutral200 },
-  filled: { backgroundColor: colors.palette.neutral400 },
-  reversed: { backgroundColor: colors.palette.neutral700 },
+  ghost: { backgroundColor: colors.palette.neutral400 },
   outlined: { backgroundColor: colors.transparent },
   link: { backgroundColor: colors.transparent },
 }
 
 const $pressedTextPresets: Record<Presets, StyleProp<TextStyle>> = {
   default: { opacity: 0.9 },
-  filled: { opacity: 0.9 },
-  reversed: { opacity: 0.9 },
+  ghost: { opacity: 0.9 },
   outlined: { opacity: 0.9 },
   link: { opacity: 0.9 },
 }

@@ -3,7 +3,7 @@
   "displayName": "TodoMobile",
   "expo": {
     "name": "TodoMobile",
-    "slug": "TodoMobile",
+    "slug": "poly-todo",
     "scheme": "todomobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,13 +11,15 @@
     "splash": {
       "image": "./assets/images/splash-logo-all.png",
       "resizeMode": "contain",
-      "backgroundColor": "#191015"
+      "backgroundColor": "#0049b0"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "jsEngine": "hermes",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "android": {
       "icon": "./assets/images/app-icon-android-legacy.png",
       "package": "com.todomobile",
@@ -28,7 +30,7 @@
       "splash": {
         "image": "./assets/images/splash-logo-android-universal.png",
         "resizeMode": "contain",
-        "backgroundColor": "#191015"
+        "backgroundColor": "#0049b0"
       }
     },
     "ios": {
@@ -50,6 +52,14 @@
         "backgroundColor": "#0049b0"
       }
     },
-    "plugins": ["expo-localization"]
+    "plugins": [
+      "expo-localization"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b6952f81-a6a7-4765-a1d1-cbc0d7ba76fb"
+      }
+    },
+    "owner": "nitin0802"
   }
 }

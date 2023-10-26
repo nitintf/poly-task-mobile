@@ -1,6 +1,8 @@
-import { AppleIcon, GoogleIcon, PolyLogo, TakingNotesIcon } from "app/components/icons"
+import { GoogleIcon, PolyLogo, TakingNotesIcon } from "app/components/icons"
+import { useStores } from "app/models"
+import * as WebBrowser from "expo-web-browser"
 import { observer } from "mobx-react-lite"
-import React, { FC } from "react"
+import React, { FC, useEffect } from "react"
 import { TextStyle, View, ViewStyle } from "react-native"
 import { Button, Screen, Text } from "../components"
 import { AppStackScreenProps } from "../navigators"
@@ -8,10 +10,16 @@ import { colors, spacing } from "../theme"
 
 interface LoginScreenProps extends AppStackScreenProps<"SignIn"> {}
 
-export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen({ navigation }) {
-  function login() {
-    navigation.navigate("Home")
-  }
+export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen() {
+  const { authenticationStore } = useStores()
+
+  useEffect(() => {
+    WebBrowser.warmUpAsync()
+
+    return () => {
+      WebBrowser.coolDownAsync()
+    }
+  }, [])
 
   return (
     <Screen
@@ -26,26 +34,19 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen({
         </Text>
       </View>
       <TakingNotesIcon />
+      <Text preset="subheading" style={$subHeading}>
+        Empower Your Productivity - Anytime, Anywhere!
+      </Text>
+      <Text style={$subHeadingText}>
+        Sign In Below To Unlock Your Productivity Potential With Poly!
+      </Text>
       <View style={$bottomContainer}>
-        <Text preset="subheading" style={$subHeading}>
-          SignIn below to Empower Your Productivity - Anytime, Anywhere!
-        </Text>
         <Button
           testID="login-google-button"
           text="Continue with Google"
-          style={$tapButton}
-          onPress={login}
+          onPress={authenticationStore.signInWithGoogle}
           LeftAccessory={GoogleIcon}
         />
-        <Button
-          testID="login-apple-button"
-          text="Continue with Apple"
-          style={$tapButton}
-          onPress={login}
-          preset="outlined"
-          LeftAccessory={AppleIcon}
-        />
-
         <Text style={$privacyPolicy}>By signing up, you agree to the Privacy Policy</Text>
       </View>
     </Screen>
@@ -53,6 +54,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen({
 })
 
 const $screenContentContainer: ViewStyle = {
+  flex: 1,
   paddingVertical: spacing.lg,
   paddingHorizontal: spacing.lg,
 }
@@ -65,16 +67,18 @@ const $headerContainer: ViewStyle = {
 }
 
 const $bottomContainer: ViewStyle = {
-  marginTop: -spacing.xxxl - 30,
+  flex: 1,
+  justifyContent: "flex-end",
 }
 
 const $subHeading: TextStyle = {
   textAlign: "center",
-  marginBottom: spacing.sm,
+  marginTop: -spacing.xxxl - 20,
 }
 
-const $tapButton: ViewStyle = {
-  marginTop: spacing.lg,
+const $subHeadingText: TextStyle = {
+  textAlign: "center",
+  marginVertical: spacing.md,
 }
 
 const $privacyPolicy: TextStyle = {

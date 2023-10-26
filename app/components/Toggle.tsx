@@ -1,7 +1,6 @@
 import React, { ComponentType, FC, useMemo } from "react"
 import {
   GestureResponderEvent,
-  Image,
   ImageStyle,
   StyleProp,
   SwitchProps,
@@ -14,8 +13,8 @@ import {
 } from "react-native"
 import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated"
 import { colors, spacing } from "../theme"
-import { iconRegistry, IconTypes } from "./Icon"
 import { Text, TextProps } from "./Text"
+import { TickIcon } from "./icons"
 
 type Variants = "checkbox" | "switch" | "radio"
 
@@ -111,10 +110,6 @@ interface CheckboxToggleProps extends BaseToggleProps {
    * Optional style prop that affects the Image component.
    */
   inputDetailStyle?: ImageStyle
-  /**
-   * Checkbox-only prop that changes the icon used for the "on" state.
-   */
-  checkboxIcon?: IconTypes
 }
 
 interface RadioToggleProps extends BaseToggleProps {
@@ -148,7 +143,6 @@ interface ToggleInputProps {
   innerStyle: ViewStyle
   detailStyle: Omit<ViewStyle & ImageStyle, "overflow">
   switchAccessibilityMode?: SwitchToggleProps["switchAccessibilityMode"]
-  checkboxIcon?: CheckboxToggleProps["checkboxIcon"]
 }
 
 /**
@@ -176,7 +170,6 @@ export function Toggle(props: ToggleProps) {
   } = props
 
   const { switchAccessibilityMode } = props as SwitchToggleProps
-  const { checkboxIcon } = props as CheckboxToggleProps
 
   const disabled = editable === false || status === "disabled" || props.disabled
 
@@ -220,7 +213,6 @@ export function Toggle(props: ToggleProps) {
           innerStyle={props.inputInnerStyle}
           detailStyle={props.inputDetailStyle}
           switchAccessibilityMode={switchAccessibilityMode}
-          checkboxIcon={checkboxIcon}
         />
 
         {labelPosition === "right" && <FieldLabel {...props} labelPosition={labelPosition} />}
@@ -251,7 +243,6 @@ function Checkbox(props: ToggleInputProps) {
     on,
     status,
     disabled,
-    checkboxIcon,
     outerStyle: $outerStyleOverride,
     innerStyle: $innerStyleOverride,
     detailStyle: $detailStyleOverride,
@@ -298,10 +289,7 @@ function Checkbox(props: ToggleInputProps) {
           useAnimatedStyle(() => ({ opacity: withTiming(on ? 1 : 0) }), [on]),
         ]}
       >
-        <Image
-          source={iconRegistry[checkboxIcon] || iconRegistry.check}
-          style={[$checkboxDetail, { tintColor: iconTintColor }, $detailStyleOverride]}
-        />
+        <TickIcon style={[$checkboxDetail, { tintColor: iconTintColor }, $detailStyleOverride]} />
       </Animated.View>
     </View>
   )
@@ -500,13 +488,6 @@ function SwitchAccessibilityLabel(props: ToggleInputProps & { role: "on" | "off"
           ]}
         />
       )}
-
-      {switchAccessibilityMode === "icon" && shouldLabelBeVisible && (
-        <Image
-          style={[$switchAccessibilityIcon, { tintColor: color }]}
-          source={role === "off" ? iconRegistry.hidden : iconRegistry.view}
-        />
-      )}
     </View>
   )
 }
@@ -634,12 +615,6 @@ const $switchAccessibility: TextStyle = {
   width: "40%",
   justifyContent: "center",
   alignItems: "center",
-}
-
-const $switchAccessibilityIcon: ImageStyle = {
-  width: 14,
-  height: 14,
-  resizeMode: "contain",
 }
 
 const $switchAccessibilityLine: ViewStyle = {

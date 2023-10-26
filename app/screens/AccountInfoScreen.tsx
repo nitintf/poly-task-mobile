@@ -1,61 +1,139 @@
-import React, { FC } from "react"
-import { observer } from "mobx-react-lite"
-import { TextStyle, View, ViewStyle } from "react-native"
-import { AppStackScreenProps } from "app/navigators"
-import { Button, Divider, Screen, SettingsItem, Text } from "app/components"
-import { colors, spacing } from "app/theme"
-import { useNavigation } from "@react-navigation/native"
+import { Avatar } from "@ui-kitten/components"
 import {
-  AccountIcon,
+  Divider,
+  Screen,
+  SettingAction,
+  SettingIcon,
+  SettingItem,
+  SettingLabel,
+  SettingsSection,
+  Text,
+  Toggle,
+} from "app/components"
+import {
   AppsIcon,
   InfoIcon,
   LockIcon,
   MailIcon,
   MegaphoneIcon,
   NotificationBellIcon,
+  RightArrowIcon,
   StarIcon,
 } from "app/components/icons"
+import { useStores } from "app/models"
+import { AppStackScreenProps } from "app/navigators"
+import { colors, spacing } from "app/theme"
+import { observer } from "mobx-react-lite"
+import React, { FC } from "react"
+import { TextStyle, View, ViewStyle } from "react-native"
 
-interface AccountInfoScreenProps extends AppStackScreenProps<"AccountInfo"> {}
+interface AccountInfoScreenProps extends AppStackScreenProps<"Account"> {}
 
-export const AccountInfoScreen: FC<AccountInfoScreenProps> = observer(function AccountInfoScreen() {
-  const navigation = useNavigation()
+export const AccountInfoScreen: FC<AccountInfoScreenProps> = observer(function AccountInfoScreen({
+  navigation,
+}) {
+  const { settingsStore, authenticationStore } = useStores()
+
+  const logout = () => {
+    navigation.goBack()
+
+    settingsStore.reset()
+    authenticationStore.logout()
+  }
 
   return (
     <Screen style={$root} preset="scroll" contentContainerStyle={$containerStyle}>
-      <View style={$header}>
-        <Text text="Account" preset="formLabel" />
-        <Button preset="link" onPress={() => navigation.goBack()}>
-          Done
-        </Button>
+      <View style={$detailsContainer}>
+        <Avatar source={{ uri: authenticationStore.user?.picture }} size="large" />
+        <View>
+          <Text>{authenticationStore.user.name}</Text>
+          <Text style={$emailText}>{authenticationStore.user.email}</Text>
+        </View>
       </View>
-      <Text preset="formLabel" style={$sectionTitle}>
-        Settings
-      </Text>
-      <SettingsItem
-        label="Push Notifications"
-        Icon={NotificationBellIcon}
-        actionHelperText="None"
-      />
-      <SettingsItem
-        label="Auto-lock after 2 mins"
-        subLabel="Quick unlock with Face ID or passcode"
-        Icon={LockIcon}
-        isToogle
-      />
-      <SettingsItem label="Shake to send feedback" Icon={MegaphoneIcon} isToogle />
-      <SettingsItem label="Manage account" Icon={AccountIcon} />
       <Divider />
-      <Text preset="formLabel" style={$sectionTitle}>
-        Help and Feedback
-      </Text>
-      <SettingsItem label="Send feedback" Icon={MailIcon} />
-      <SettingsItem label="Rate us" Icon={StarIcon} />
-      <SettingsItem label="More Poly apps" Icon={AppsIcon} />
-      <SettingsItem label="About" Icon={InfoIcon} />
+      <SettingsSection title="Settings">
+        <>
+          <SettingItem onPress={() => navigation.navigate("PushNotification")}>
+            <SettingIcon>
+              <NotificationBellIcon />
+            </SettingIcon>
+            <SettingLabel>Push Noitification</SettingLabel>
+            <SettingAction>
+              <>
+                <Text style={$actionHelperText}>{settingsStore.pushNotificationDisplayText}</Text>
+                <RightArrowIcon />
+              </>
+            </SettingAction>
+          </SettingItem>
+          <SettingItem>
+            <SettingIcon>
+              <LockIcon />
+            </SettingIcon>
+            <SettingLabel subLabel="Quick unlock with Face ID or passcode">
+              Auto-lock after 2 mins
+            </SettingLabel>
+            <SettingAction>
+              <Toggle
+                variant="switch"
+                value={settingsStore.autoLock}
+                onValueChange={() => settingsStore.toggleAutoLock()}
+              />
+            </SettingAction>
+          </SettingItem>
+          <SettingItem>
+            <SettingIcon>
+              <MegaphoneIcon />
+            </SettingIcon>
+            <SettingLabel>Shake to send feedback</SettingLabel>
+            <SettingAction>
+              <Toggle
+                value={settingsStore.shakeToSendFeedback}
+                variant="switch"
+                onValueChange={() => settingsStore.toggleShakeToSendFeedback()}
+              />
+            </SettingAction>
+          </SettingItem>
+        </>
+      </SettingsSection>
+      <SettingsSection title="Help and Feedback">
+        <>
+          <SettingItem>
+            <SettingIcon>
+              <MailIcon />
+            </SettingIcon>
+            <SettingLabel>Send Feedback</SettingLabel>
+            <SettingAction />
+          </SettingItem>
+          <SettingItem>
+            <SettingIcon>
+              <StarIcon />
+            </SettingIcon>
+            <SettingLabel>Rate Us</SettingLabel>
+            <SettingAction />
+          </SettingItem>
+
+          <SettingItem>
+            <SettingIcon>
+              <AppsIcon />
+            </SettingIcon>
+            <SettingLabel>More Poly apps</SettingLabel>
+            <SettingAction />
+          </SettingItem>
+
+          <SettingItem>
+            <SettingIcon>
+              <InfoIcon />
+            </SettingIcon>
+            <SettingLabel>About</SettingLabel>
+            <SettingAction />
+          </SettingItem>
+        </>
+      </SettingsSection>
+      <SettingItem onPress={logout}>
+        <SettingLabel styles={$logoutText}>Logout</SettingLabel>
+      </SettingItem>
       <Divider />
-      <SettingsItem label="Logout" style={$logoutIcon} labelStyle={$logoutText} />
-      <Divider />
+      <Text style={$versionText}>V 1.0.0</Text>
     </Screen>
   )
 })
@@ -67,28 +145,35 @@ const $root: ViewStyle = {
 
 const $containerStyle: ViewStyle = {
   paddingHorizontal: spacing.md,
-  paddingVertical: spacing.md,
-}
-
-const $header: ViewStyle = {
-  width: "60%",
-  marginLeft: "auto",
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-  marginBottom: spacing.md,
-}
-
-const $sectionTitle: TextStyle = {
-  fontSize: 14,
-  textTransform: "uppercase",
-  color: colors.palette.neutral500,
-}
-
-const $logoutIcon: ViewStyle = {
-  marginTop: 0,
+  paddingBottom: spacing.xxl,
 }
 
 const $logoutText: TextStyle = {
   color: colors.error,
+  marginTop: -spacing.md - 10,
+}
+
+const $actionHelperText: TextStyle = {
+  fontSize: 14,
+  color: colors.palette.neutral500,
+  marginRight: spacing.sm,
+}
+
+const $detailsContainer: ViewStyle = {
+  flexDirection: "row",
+  gap: spacing.md,
+  marginVertical: spacing.md,
+  alignItems: "center",
+}
+
+const $emailText: TextStyle = {
+  color: colors.palette.neutral500,
+  fontSize: 14,
+}
+
+const $versionText: TextStyle = {
+  color: colors.palette.neutral500,
+  fontSize: 14,
+  textAlign: "center",
+  marginBottom: spacing.md,
 }
