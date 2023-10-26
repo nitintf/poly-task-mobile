@@ -1,164 +1,65 @@
-# Welcome to your new ignited app!
+# Poly Task Management
 
-[![CircleCI](https://circleci.com/gh/infinitered/ignite.svg?style=svg)](https://circleci.com/gh/infinitered/ignite)
+![iOS](https://img.shields.io/badge/iOS-000.svg?style=for-the-badge&logo=ios&logoColor=white)
+![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 
-## The latest and greatest boilerplate for Infinite Red opinions
+Poly Task Management is a cross-platform task management application built for both Android and iOS. It's designed to help users manage their tasks efficiently and effectively.
 
-This is the boilerplate that [Infinite Red](https://infinite.red) uses as a way to test bleeding-edge changes to our React Native stack.
+![Screenshot](assets/docs//894shots_so.png)
 
-Currently includes:
+## Tech Stack
 
-- React Native
-- React Navigation
-- MobX State Tree
-- TypeScript
-- And more!
+The application is built using the following technologies:
 
-## Quick Start
+- **React Native**: A popular framework for building mobile applications using JavaScript and React.
+- **Expo**: A set of tools built around React Native to help you quickly start an app.
+- **TypeScript**: A typed superset of JavaScript that adds static types.
+- **MobX State Tree**: A state management library that simplifies the handling of complex data structures.
+- **Reactotron**: A desktop app for inspecting your React JS and React Native projects.
+- **Supabase**: An open source Firebase alternative. It provides a backend as a service with a real-time database, authentication, and more.
+- **Ignite**: A boilerplate generator for React Native that lets you choose from various project templates to save you from time-consuming setup and configuration.
 
-The Ignite boilerplate project's structure will look similar to this:
+## Folder Structure
 
-```
-ignite-project
-├── app
-│   ├── components
-│   ├── config
-│   ├── i18n
-│   ├── models
-│   ├── navigators
-│   ├── screens
-│   ├── services
-│   ├── theme
-│   ├── utils
-│   └── app.tsx
-├── assets
-│   ├── icons
-│   └── images
-├── test
-│   ├── __snapshots__
-│   ├── mockFile.ts
-│   └── setup.ts
-├── README.md
-├── android
-│   ├── app
-│   ├── build.gradle
-│   ├── gradle
-│   ├── gradle.properties
-│   ├── gradlew
-│   ├── gradlew.bat
-│   ├── keystores
-│   └── settings.gradle
-├── ignite
-│   └── templates
-|       |── app-icon
-│       ├── component
-│       ├── model
-│       ├── navigator
-│       └── screen
-├── index.js
-├── ios
-│   ├── IgniteProject
-│   ├── IgniteProject-tvOS
-│   ├── IgniteProject-tvOSTests
-│   ├── IgniteProject.xcodeproj
-│   └── IgniteProjectTests
-├── .env
-└── package.json
+The project has a standard React Native project structure with some additional directories:
 
+- `android/` and `ios/`: These directories contain all the code needed to run your app on Android and iOS respectively.
+- `app/`: This directory contains all the JavaScript code for the app, including components, screens, and state management.
+- `app/components/`: This directory contains all the reusable React components.
+- `app/devtools/`: This directory contains configuration for Reactotron, a tool for inspecting your React and React Native applications.
+- `assets/`: This directory contains all the static assets (images, fonts, etc.) used in the project.
+
+## Important Files
+
+- `app.json`: This file contains the configuration for the Expo tools, including the app's name, slug, and version, as well as platform-specific settings.
+- `package.json`: This file lists the project's npm dependencies and defines the available script commands.
+- `android/settings.gradle` and `android/app/build.gradle`: These files contain configuration for the Android build process.
+- `ios/TodoMobile.xcworkspace/contents.xcworkspacedata` and `ios/TodoMobile.xcodeproj/project.pbxproj`: These files contain configuration for the iOS build process.
+- `.env.example`: This file contains example environment variables needed for app to work. You need to copy this file to `.env` and replace the placeholders with your actual env variables.
+
+## Running the Project
+
+To run the project, you need to have Node.js, npm, and Expo CLI installed on your machine. Then, you can run the following commands:
+
+```shell
+# Install dependencies
+yarn install
+
+# Start the development server
+yarn expo:start
 ```
 
-### ./app directory
+- Before running the project, make sure to set up the environment variables in the `.env` file. You can find an example in the `.env.example` file.
+- For setting up Google OAuth with Supabase, you can follow this [tutorial](https://blog.spirokit.com/google-authentication-with-expo-supabase).
 
-Included in an Ignite boilerplate project is the `app` directory. This is a directory you would normally have to create when using vanilla React Native.
+This will start the Expo development server. You can then open the app on your device by scanning the QR code displayed in the terminal or on the Expo dev tools page.
 
-The inside of the `app` directory looks similar to the following:
+## Contributing
 
-```
-app
-├── components
-├── config
-├── i18n
-├── models
-├── navigators
-├── screens
-├── services
-├── theme
-├── utils
-└── app.tsx
-```
+Contributions are welcome! Please read the contributing guidelines before getting started.
 
-**components**
-This is where your reusable components live which help you build your screens.
+<!-- ## License
 
-**i18n**
-This is where your translations will live if you are using `react-native-i18n`.
+This project is licensed under the terms of the MIT license. -->
 
-**models**
-This is where your app's models will live. Each model has a directory which will contain the `mobx-state-tree` model file, test file, and any other supporting files like actions, types, etc.
-
-**navigators**
-This is where your `react-navigation` navigators will live.
-
-**screens**
-This is where your screen components will live. A screen is a React component which will take up the entire screen and be part of the navigation hierarchy. Each screen will have a directory containing the `.tsx` file, along with any assets or other helper files.
-
-**services**
-Any services that interface with the outside world will live here (think REST APIs, Push Notifications, etc.).
-
-**theme**
-Here lives the theme for your application, including spacing, colors, and typography.
-
-**utils**
-This is a great place to put miscellaneous helpers and utilities. Things like date helpers, formatters, etc. are often found here. However, it should only be used for things that are truly shared across your application. If a helper or utility is only used by a specific component or model, consider co-locating your helper with that component or model.
-
-**app.tsx** This is the entry point to your app. This is where you will find the main App component which renders the rest of the application.
-
-### ./assets directory
-
-This directory is designed to organize and store various assets, making it easy for you to manage and use them in your application. The assets are further categorized into subdirectories, including `icons` and `images`:
-
-```
-assets
-├── icons
-└── images
-```
-
-**icons**
-This is where your icon assets will live. These icons can be used for buttons, navigation elements, or any other UI components. The recommended format for icons is PNG, but other formats can be used as well.
-
-Ignite comes with a built-in `Icon` component. You can find detailed usage instructions in the [docs](https://github.com/infinitered/ignite/blob/master/docs/Components-Icon.md).
-
-**images**
-This is where your images will live, such as background images, logos, or any other graphics. You can use various formats such as PNG, JPEG, or GIF for your images.
-
-Another valuable built-in component within Ignite is the `AutoImage` component. You can find detailed usage instructions in the [docs](https://github.com/infinitered/ignite/blob/master/docs/Components-AutoImage.md).
-
-How to use your `icon` or `image` assets:
-
-```
-import { Image } from 'react-native';
-
-const MyComponent = () => {
-  return (
-    <Image source={require('../assets/images/my_image.png')} />
-  );
-};
-```
-
-### ./ignite directory
-
-The `ignite` directory stores all things Ignite, including CLI and boilerplate items. Here you will find templates you can customize to help you get started with React Native.
-
-### ./test directory
-
-This directory will hold your Jest configs and mocks.
-
-## Running Maestro end-to-end tests
-
-Follow our [Maestro Setup](https://ignitecookbook.com/docs/recipes/MaestroSetup) recipe from the [Ignite Cookbook](https://ignitecookbook.com/)!
-
-## Previous Boilerplates
-
-- [2018 aka Bowser](https://github.com/infinitered/ignite-bowser)
-- [2017 aka Andross](https://github.com/infinitered/ignite-andross)
-- [2016 aka Ignite 1.0](https://github.com/infinitered/ignite-ir-boilerplate-2016)
+This project is based on the Ignite template. A big shoutout to them for making the project setup process easier and more efficient.

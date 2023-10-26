@@ -21,6 +21,6 @@ export const PolyLogo = () => {
 }
 
 const $imageStyle = {
-  height: 30,
-  width: 30,
+  height: 40,
+  width: 40,
 }

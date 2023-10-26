@@ -29,9 +29,12 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen()
     >
       <View style={$headerContainer}>
         <PolyLogo />
-        <Text testID="login-heading" preset="heading">
-          Poly
-        </Text>
+        <View style={$appTitle}>
+          <Text>Poly</Text>
+          <Text style={$polyText} testID="login-heading" preset="subheading">
+            Task Manager
+          </Text>
+        </View>
       </View>
       <TakingNotesIcon />
       <Text preset="subheading" style={$subHeading}>
@@ -89,4 +92,12 @@ const $privacyPolicy: TextStyle = {
   width: "60%",
   alignSelf: "center",
   color: colors.textDim,
+}
+
+const $appTitle: ViewStyle = {
+  justifyContent: "flex-start",
+}
+
+const $polyText: TextStyle = {
+  lineHeight: 20,
 }
