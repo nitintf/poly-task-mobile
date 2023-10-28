@@ -7,6 +7,7 @@ const fonts = {
     light: "HelveticaNeue-Light",
     normal: "Helvetica Neue",
     medium: "HelveticaNeue-Medium",
+    bold: "HelveticaNeue-Bold",
   },
   courier: {
     // iOS only font.
@@ -18,6 +19,7 @@ const fonts = {
     light: "sans-serif-light",
     normal: "sans-serif",
     medium: "sans-serif-medium",
+    bold: "sans-serif-bold",
   },
   monospace: {
     // Android only font.

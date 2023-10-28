@@ -9,6 +9,7 @@ import { useInitialRootStore } from "./models"
 import { AppNavigator } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
 import Config from "./config"
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 if (__DEV__) {
   require("./devtools/ReactotronConfig.ts")
 }
@@ -55,7 +56,9 @@ function App(props: AppProps) {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
         <ApplicationProvider {...eva} theme={eva.light}>
-          <AppNavigator linking={linking} />
+          <BottomSheetModalProvider>
+            <AppNavigator linking={linking} />
+          </BottomSheetModalProvider>
         </ApplicationProvider>
       </ErrorBoundary>
     </SafeAreaProvider>

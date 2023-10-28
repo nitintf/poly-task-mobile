@@ -9,10 +9,13 @@ import Config from "../config"
 import { useStores } from "../models"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { AccountSettingNavigator } from "./AccountSettingsNavigator"
+import { HomeNavigator } from "./HomeNavigator"
 
 export type AppStackParamList = {
   Home: undefined
   SignIn: undefined
+  Spaces: undefined
+  Stats: undefined
   Account: undefined
   AccountSetting: undefined
   PushNotification: undefined
@@ -40,7 +43,7 @@ const AppStack = observer(function AppStack() {
     >
       {isAuthenticated ? (
         <>
-          <Stack.Screen options={{}} name="Home" component={Screens.HomeScreen} />
+          <Stack.Screen name="Home" component={HomeNavigator} />
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen name="AccountSetting" component={AccountSettingNavigator} />
           </Stack.Group>
