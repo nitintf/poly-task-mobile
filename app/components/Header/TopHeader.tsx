@@ -26,9 +26,9 @@ export const TopHeader: React.FC<Props> = observer(({ navigate, actions }) => {
         <Avatar source={{ uri: authenticationStore.user?.picture }} size="small" />
       </TouchableOpacity>
       <View style={$iconContainer}>
-        {actions?.map(({ name, Icon }) => {
+        {actions?.map(({ name, Icon, onPress }) => {
           return (
-            <Pressable key={name}>
+            <Pressable key={name} onPress={onPress}>
               <Icon />
             </Pressable>
           )

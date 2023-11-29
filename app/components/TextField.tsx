@@ -1,4 +1,11 @@
-import React, { ComponentType, forwardRef, Ref, useImperativeHandle, useRef } from "react"
+import React, {
+  ComponentType,
+  forwardRef,
+  Ref,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+} from "react"
 import {
   StyleProp,
   TextInput,
@@ -11,6 +18,7 @@ import {
 import { isRTL, translate } from "../i18n"
 import { colors, spacing, typography } from "../theme"
 import { Text, TextProps } from "./Text"
+import { useBottomSheetInternal } from "@gorhom/bottom-sheet"
 
 export interface TextFieldAccessoryProps {
   style: StyleProp<any>
@@ -124,6 +132,7 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
     ...TextInputProps
   } = props
   const input = useRef<TextInput>()
+  const bottomSheetInternal = useBottomSheetInternal()
 
   const disabled = TextInputProps.editable === false || status === "disabled"
 
@@ -164,6 +173,22 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
     input.current?.focus()
   }
 
+  const handleFocus = useCallback(() => {
+    if (bottomSheetInternal == null) {
+      return
+    }
+
+    bottomSheetInternal.shouldHandleKeyboardEvents.value = true
+  }, [bottomSheetInternal])
+
+  const handleBlur = useCallback(() => {
+    if (bottomSheetInternal == null) {
+      return
+    }
+
+    bottomSheetInternal.shouldHandleKeyboardEvents.value = false
+  }, [bottomSheetInternal])
+
   useImperativeHandle(ref, () => input.current)
 
   return (
@@ -203,6 +228,9 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
           {...TextInputProps}
           editable={!disabled}
           style={$inputStyles}
+          autoCorrect={false}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
 
         {!!RightAccessory && (
@@ -230,26 +258,27 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
 })
 
 const $labelStyle: TextStyle = {
-  marginBottom: spacing.xs,
+  marginBottom: spacing.xxs,
+  fontSize: 13,
+  fontFamily: typography.secondary.normal,
+  color: colors.palette.neutral500,
 }
 
 const $inputWrapperStyle: ViewStyle = {
   flexDirection: "row",
   alignItems: "flex-start",
-  borderWidth: 1,
-  borderRadius: 4,
-  backgroundColor: colors.palette.neutral200,
-  borderColor: colors.palette.neutral400,
+  borderRadius: 5,
+  backgroundColor: colors.palette.neutral650,
   overflow: "hidden",
 }
 
 const $inputStyle: TextStyle = {
   flex: 1,
   alignSelf: "stretch",
-  fontFamily: typography.primary.normal,
+  fontFamily: typography.secondary.normal,
   color: colors.text,
-  fontSize: 16,
-  height: 24,
+  fontSize: 17,
+  height: 26,
   // https://github.com/facebook/react-native/issues/21720#issuecomment-532642093
   paddingVertical: 0,
   paddingHorizontal: 0,
