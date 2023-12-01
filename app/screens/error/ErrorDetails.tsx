@@ -17,7 +17,6 @@ export function ErrorDetails(props: ErrorDetailsProps) {
       contentContainerStyle={$contentContainer}
     >
       <View style={$topSection}>
-        <Icon icon="ladybug" size={64} />
         <Text style={$heading} preset="subheading" tx="errorScreen.title" />
         <Text tx="errorScreen.friendlySubtitle" />
       </View>
@@ -32,7 +31,7 @@ export function ErrorDetails(props: ErrorDetailsProps) {
       </ScrollView>
 
       <Button
-        preset="reversed"
+        preset="default"
         style={$resetButton}
         onPress={props.onReset}
         tx="errorScreen.reset"

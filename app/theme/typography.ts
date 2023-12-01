@@ -19,7 +19,7 @@ const fonts = {
     light: "sans-serif-light",
     normal: "sans-serif",
     medium: "sans-serif-medium",
-    bold: "sans-serif-bold",
+    bold: "sans-serif-medium",
   },
   monospace: {
     // Android only font.
@@ -35,7 +35,7 @@ export const typography = {
   /**
    * The primary font. Used in most places.
    */
-  primary: fonts.helveticaNeue,
+  primary: Platform.select({ ios: fonts.helveticaNeue, android: fonts.sansSerif }),
   /**
    * An alternate font used for perhaps titles and stuff.
    */
