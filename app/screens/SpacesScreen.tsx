@@ -19,7 +19,7 @@ export const SpacesScreen: FC<SpacesScreenProps> = observer(function SpacesScree
         actions={[{ Icon: AddIcon, onPress: () => showCreateSpaceModal(true), name: "add-spaces" }]}
       />
       <Text text="Spaces" preset="heading" />
-      {createSpaceModalVisible && <AddSpace onDissmis={() => showCreateSpaceModal(false)} />}
+      {createSpaceModalVisible && <AddSpace onDismiss={() => showCreateSpaceModal(false)} />}
     </Screen>
   )
 })

@@ -85,6 +85,7 @@ export function Button(props: ButtonProps) {
     children,
     RightAccessory,
     LeftAccessory,
+    disabled,
     ...rest
   } = props
 
@@ -105,12 +106,17 @@ export function Button(props: ButtonProps) {
   }
 
   return (
-    <Pressable style={$viewStyle} accessibilityRole="button" {...rest}>
+    <Pressable style={$viewStyle} accessibilityRole="button" disabled={disabled} {...rest}>
       {(state) => (
         <>
           {!!LeftAccessory && <LeftAccessory style={$leftAccessoryStyle} pressableState={state} />}
 
-          <Text tx={tx} text={text} txOptions={txOptions} style={$textStyle(state)}>
+          <Text
+            tx={tx}
+            text={text}
+            txOptions={txOptions}
+            style={[$textStyle(state), disabled && $disableStyle]}
+          >
             {children}
           </Text>
 
@@ -147,6 +153,8 @@ const $baseTextStyle: TextStyle = {
 
 const $rightAccessoryStyle: ViewStyle = { marginStart: spacing.xs, zIndex: 1 }
 const $leftAccessoryStyle: ViewStyle = { marginEnd: spacing.xs, zIndex: 1 }
+
+const $disableStyle: TextStyle = { opacity: 0.5 }
 
 const $viewPresets = {
   default: [

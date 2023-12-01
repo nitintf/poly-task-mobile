@@ -1,15 +1,12 @@
 import { Avatar } from "@ui-kitten/components"
 import {
-  Divider,
-  Screen,
   SettingAction,
   SettingIcon,
   SettingItem,
   SettingLabel,
   SettingsSection,
-  Text,
-  Toggle,
-} from "app/components"
+} from "app/components/settings"
+import { Text, Toggle, Divider, Screen } from "app/components"
 import {
   AppsIcon,
   InfoIcon,

@@ -21,14 +21,14 @@ export const TasksIcon = (props: Props) => {
   return (
     <Svg width={28} height={28} fill="none" viewBox="0 0 24 24" {...props}>
       <Path
-        stroke={colors.palette.neutral700}
+        stroke={colors.palette.neutral550}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}
         d="M12.37 8.88h5.25M6.38 8.88l.75.75 2.25-2.25M12.37 15.88h5.25M6.38 15.88l.75.75 2.25-2.25"
       />
       <Path
-        stroke={colors.palette.neutral700}
+        stroke={colors.palette.neutral550}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}

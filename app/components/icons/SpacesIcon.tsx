@@ -18,7 +18,7 @@ export const SpacesIcon = (props: Props) =>
   ) : (
     <Svg width={36} height={36} fill="none" viewBox="0 0 24 24" {...props}>
       <Path
-        stroke={colors.palette.neutral700}
+        stroke={colors.palette.neutral550}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1}

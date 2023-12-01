@@ -4,9 +4,10 @@ import React from "react"
 import { ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Screens from "../screens"
-import { colors } from "../theme"
+import { colors, spacing } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { SpacesIcon, StatsIcon, TasksIcon } from "app/components/icons"
+import { color } from "react-native-reanimated"
 
 export type HomeTabParamList = {
   Tasks: undefined
@@ -36,7 +37,6 @@ export function HomeNavigator() {
         tabBarHideOnKeyboard: true,
         tabBarStyle: [$tabBar, { height: bottom + 55 }],
         tabBarItemStyle: $tabBarItem,
-        tabBarShowLabel: false,
       }}
     >
       <Tab.Screen
@@ -65,10 +65,9 @@ export function HomeNavigator() {
 }
 
 const $tabBar: ViewStyle = {
-  backgroundColor: colors.background,
-  borderTopColor: colors.palette.neutral700,
+  backgroundColor: colors.palette.neutral850,
 }
 
 const $tabBarItem: ViewStyle = {
-  // paddingTop: spacing.md,
+  paddingTop: spacing.sm,
 }

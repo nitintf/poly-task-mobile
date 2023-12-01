@@ -1,6 +1,13 @@
 import { colors, spacing } from "app/theme"
-import React, { useCallback, useState } from "react"
-import { Pressable, View, ViewStyle } from "react-native"
+import React, { useCallback, useMemo, useRef, useState } from "react"
+import {
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  View,
+  ViewStyle,
+} from "react-native"
 import { Button } from "../Button"
 import { TextField } from "../TextField"
 import { ColorIcon } from "../icons"
@@ -11,8 +18,9 @@ import Animated, {
   Easing,
   useAnimatedStyle,
 } from "react-native-reanimated"
-// import ColorPicker, { Swatches } from "reanimated-color-picker"
-import { Text } from "../Text"
+import ColorPicker, { Swatches } from "reanimated-color-picker"
+import { BottomSheetModal } from "@gorhom/bottom-sheet"
+import { useKeyboard } from "app/hooks/useKeyboard"
 
 interface Props {
   onDismiss: () => void
@@ -20,24 +28,41 @@ interface Props {
 
 export const AddSpace: React.FC<Props> = ({ onDismiss }) => {
   const [spaceName, setSpaceName] = useState("")
-  const [color, setColor] = useState("")
-  const onSubmit = useCallback(() => {
-    console.log("spaceName :", spaceName, color)
-  }, [spaceName, color])
+  const [color, setColor] = useState("#000")
 
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
   const buttonHeight = useSharedValue(100)
   const textOpacity = useSharedValue(1)
 
-  const slideDown = () => {
-    runAnimation(0, 0)
-  }
+  const keyboard = useKeyboard()
 
-  const slideUp = () => {
+  const onSubmit = useCallback(() => {
+    // Do something on submit
+    console.log({ spaceName, color })
+  }, [spaceName, color])
+
+  const slideDown = useCallback(() => {
+    const windowHeight = Dimensions.get("window").height
+    const totalSpacing = 2 * spacing.xxxl + 35 + keyboard.keyboardHeight
+    const snapPointPercentage = (totalSpacing / windowHeight) * 100
+    const snapPoint = `${snapPointPercentage}`
+
+    bottomSheetRef.current?.snapToPosition(snapPoint)
+    runAnimation(0, 0)
+  }, [keyboard.keyboardHeight])
+
+  const slideUp = useCallback(() => {
+    const windowHeight = Dimensions.get("window").height
+    const totalSpacing = 2 * spacing.xxl + 5 + keyboard.keyboardHeight
+    const snapPointPercentage = (totalSpacing / windowHeight) * 100
+    const snapPoint = `${snapPointPercentage}%`
+
+    bottomSheetRef.current?.snapToPosition(snapPoint)
     runAnimation(100, 1)
-  }
+  }, [keyboard.keyboardHeight])
 
   const runAnimation = (height: number, opacity: number) => {
-    // "worklet"
+    "worklet"
     buttonHeight.value = withTiming(height, { duration: 300, easing: Easing.inOut(Easing.ease) })
     textOpacity.value = withTiming(opacity, { duration: 300, easing: Easing.inOut(Easing.ease) })
   }
@@ -47,65 +72,77 @@ export const AddSpace: React.FC<Props> = ({ onDismiss }) => {
     setColor(c)
   }
 
-  const bottomContainerStyle = useAnimatedStyle(() => {
-    return {
-      height: buttonHeight.value,
-      opacity: textOpacity.value,
-    }
-  }, [])
+  const bottomContainerStyle = useAnimatedStyle(() => ({
+    height: buttonHeight.value,
+    opacity: textOpacity.value,
+  }))
 
-  const colorPickerStyle = useAnimatedStyle(() => {
-    return {
-      height: 100 - buttonHeight.value,
-      opacity: 1 - textOpacity.value,
-    }
-  }, [])
+  const colorPickerStyle = useAnimatedStyle(() => ({
+    height: 100 - buttonHeight.value,
+    opacity: 1 - textOpacity.value,
+  }))
 
-  const handleSpaceNameChange = (value: string) => {
-    setSpaceName(value)
-  }
+  const snapPointPercentage = ((2 * spacing.xxl + 5) / Dimensions.get("window").height) * 100
+  const snapPoints = [`${snapPointPercentage}%`]
+
+  const isSavingDisable = useMemo(
+    () => spaceName.trim().length === 0 || color === "#000",
+    [spaceName, color],
+  )
 
   return (
-    <>
-      <BottomSheet onDismiss={onDismiss} snapPoints={["12.5%"]} showIndicator={false}>
-        <View>
-          <TextField
-            onChangeText={handleSpaceNameChange}
-            value={spaceName}
-            placeholder="Enter Space name"
-            inputWrapperStyle={{ backgroundColor: colors.transparent }}
-            autoFocus
-          />
-        </View>
-        <Animated.View style={[bottomContainerStyle, $bottomContainer]}>
-          <Pressable onPress={slideDown}>
-            <ColorIcon />
-          </Pressable>
-          <Button preset="link" onPress={onSubmit}>
-            Save
-          </Button>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={100}
+    >
+      <BottomSheet
+        ref={bottomSheetRef}
+        onDismiss={onDismiss}
+        snapPoints={snapPoints}
+        showIndicator={false}
+      >
+        <Animated.View style={bottomContainerStyle}>
+          <View>
+            <TextField
+              onChangeText={(tx) => setSpaceName(tx)}
+              value={spaceName}
+              placeholder="Enter Space name"
+              inputWrapperStyle={{ backgroundColor: colors.transparent }}
+              autoFocus
+              keyboardType="twitter"
+              autoCorrect={false}
+              autoComplete="off"
+              spellCheck={false}
+              onSubmitEditing={onDismiss}
+            />
+          </View>
+          <View style={$bottomContainer}>
+            <Pressable onPress={slideDown}>
+              <ColorIcon />
+            </Pressable>
+            <Button preset="link" onPress={onSubmit} disabled={isSavingDisable}>
+              Save
+            </Button>
+          </View>
         </Animated.View>
         <Animated.View style={colorPickerStyle}>
-          <Pressable onPress={() => selectColor("")}>
-            <Text>Nitin</Text>
-          </Pressable>
-          {/* <ColorPicker style={$colorPicker} value={color} onComplete={(c) => selectColor(c.hex)}>
+          <ColorPicker style={$colorPicker} value={color} onComplete={(c) => selectColor(c.hex)}>
             <Swatches />
-          </ColorPicker> */}
+          </ColorPicker>
         </Animated.View>
       </BottomSheet>
-    </>
+    </KeyboardAvoidingView>
   )
 }
 
 const $bottomContainer: ViewStyle = {
-  width: "100%",
-  paddingLeft: spacing.sm,
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
+  marginTop: -spacing.xs,
 }
 
 const $colorPicker: ViewStyle = {
   width: "100%",
+  marginTop: spacing.md,
 }

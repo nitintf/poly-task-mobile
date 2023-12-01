@@ -3,12 +3,14 @@ import { useStores } from "app/models"
 import * as WebBrowser from "expo-web-browser"
 import { observer } from "mobx-react-lite"
 import React, { FC, useEffect } from "react"
-import { TextStyle, View, ViewStyle } from "react-native"
+import { Dimensions, TextStyle, View, ViewStyle } from "react-native"
 import { Button, Screen, Text } from "../components"
 import { AppStackScreenProps } from "../navigators"
 import { colors, spacing } from "../theme"
 
 interface LoginScreenProps extends AppStackScreenProps<"SignIn"> {}
+
+const { height } = Dimensions.get("window")
 
 export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen() {
   const { authenticationStore } = useStores()
@@ -76,7 +78,7 @@ const $bottomContainer: ViewStyle = {
 
 const $subHeading: TextStyle = {
   textAlign: "center",
-  marginTop: -spacing.xxxl - 20,
+  marginTop: -height * 0.129,
 }
 
 const $subHeadingText: TextStyle = {

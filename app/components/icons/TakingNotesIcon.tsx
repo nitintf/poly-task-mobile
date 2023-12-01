@@ -1,8 +1,11 @@
 import * as React from "react"
+import { Dimensions } from "react-native"
 import Svg, { SvgProps, G, Path, Defs, LinearGradient, Stop, ClipPath } from "react-native-svg"
 
+const { width, height } = Dimensions.get("window")
+
 export const TakingNotesIcon = (props: SvgProps) => (
-  <Svg width={414} height={474} viewBox="0 0 1164 1274" fill="none" {...props}>
+  <Svg width={width} height={height * 0.55} viewBox="0 0 1164 1274" fill="none" {...props}>
     <G clipPath="url(#a)">
       <G clipPath="url(#b)">
         <Path
