@@ -9,7 +9,7 @@ interface Props extends SvgProps {
 export const StatsIcon = (props: Props) => {
   if (props.isFocused) {
     return (
-      <Svg width={22} height={22} viewBox="-3 0 32 32" {...props}>
+      <Svg width={20} height={20} viewBox="-3 0 32 32" {...props}>
         <Path
           fill={colors.palette.main100}
           fillRule="evenodd"
@@ -20,7 +20,7 @@ export const StatsIcon = (props: Props) => {
   }
 
   return (
-    <Svg width={22} height={22} viewBox="-3 0 32 32" {...props}>
+    <Svg width={20} height={20} viewBox="-3 0 32 32" {...props}>
       <Path
         fill={"transparent"}
         strokeWidth={2}

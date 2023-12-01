@@ -82,5 +82,5 @@ const $tabBarItem: ViewStyle = {
 
 const $tabBarLabelStyles: TextStyle = {
   // color: colors.palette.neutral600,
-  fontSize: 12,
+  fontSize: 11,
 }
