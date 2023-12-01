@@ -19,6 +19,7 @@ export type AppStackParamList = {
   Account: undefined
   AccountSetting: undefined
   PushNotification: undefined
+  Browse: undefined
 }
 
 const exitRoutes = Config.exitRoutes

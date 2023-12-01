@@ -69,7 +69,7 @@ export const colors = {
   /**
    * The default color of the screen background.
    */
-  background: palette.neutral800,
+  background: palette.neutral900,
   /**
    * The default border color.
    */

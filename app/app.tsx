@@ -7,7 +7,7 @@ import { ApplicationProvider } from "@ui-kitten/components"
 import * as eva from "@eva-design/eva"
 import { useInitialRootStore } from "./models"
 import { AppNavigator } from "./navigators"
-import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
+import { ErrorBoundary } from "./screens/error/ErrorBoundary"
 import Config from "./config"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 if (__DEV__) {

@@ -8,7 +8,7 @@ interface Props extends SvgProps {
 
 export const SpacesIcon = (props: Props) =>
   props.isFocused ? (
-    <Svg width={36} height={36} viewBox="0 0 24 24" {...props}>
+    <Svg width={30} height={30} viewBox="0 0 24 24" {...props}>
       <Path
         fill={colors.palette.main100}
         fillRule="evenodd"
@@ -16,9 +16,9 @@ export const SpacesIcon = (props: Props) =>
       />
     </Svg>
   ) : (
-    <Svg width={36} height={36} fill="none" viewBox="0 0 24 24" {...props}>
+    <Svg width={30} height={30} fill="none" viewBox="0 0 24 24" {...props}>
       <Path
-        stroke={colors.palette.neutral550}
+        stroke={colors.palette.neutral500}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1}

@@ -1,18 +1,18 @@
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { CompositeScreenProps } from "@react-navigation/native"
 import React from "react"
-import { ViewStyle } from "react-native"
+import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Screens from "../screens"
 import { colors, spacing } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
-import { SpacesIcon, StatsIcon, TasksIcon } from "app/components/icons"
-import { color } from "react-native-reanimated"
+import { SpacesIcon, StatsIcon, TasksIcon, TodayIcon } from "app/components/icons"
 
 export type HomeTabParamList = {
-  Tasks: undefined
+  Today: undefined
   Spaces: undefined
   Stats: undefined
+  Browse: undefined
 }
 
 /**
@@ -37,13 +37,14 @@ export function HomeNavigator() {
         tabBarHideOnKeyboard: true,
         tabBarStyle: [$tabBar, { height: bottom + 55 }],
         tabBarItemStyle: $tabBarItem,
+        tabBarLabelStyle: $tabBarLabelStyles,
       }}
     >
       <Tab.Screen
-        name="Tasks"
+        name="Today"
         component={Screens.HomeScreen}
         options={{
-          tabBarIcon: ({ focused }) => <TasksIcon isFocused={focused} />,
+          tabBarIcon: ({ focused }) => <TodayIcon isFocused={focused} />,
         }}
       />
       <Tab.Screen
@@ -51,6 +52,13 @@ export function HomeNavigator() {
         component={Screens.SpacesScreen}
         options={{
           tabBarIcon: ({ focused }) => <SpacesIcon isFocused={focused} />,
+        }}
+      />
+      <Tab.Screen
+        name="Browse"
+        component={Screens.BrowseScreen}
+        options={{
+          tabBarIcon: ({ focused }) => <TasksIcon isFocused={focused} />,
         }}
       />
       <Tab.Screen
@@ -65,9 +73,14 @@ export function HomeNavigator() {
 }
 
 const $tabBar: ViewStyle = {
-  backgroundColor: colors.palette.neutral850,
+  backgroundColor: colors.background,
 }
 
 const $tabBarItem: ViewStyle = {
   paddingTop: spacing.sm,
+}
+
+const $tabBarLabelStyles: TextStyle = {
+  // color: colors.palette.neutral600,
+  fontSize: 12,
 }
