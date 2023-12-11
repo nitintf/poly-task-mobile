@@ -12,7 +12,7 @@ import {
   View,
   ViewStyle,
 } from "react-native"
-import { colors, spacing } from "../theme"
+import { colors } from "../theme"
 import { ExtendedEdge, useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 
 interface BaseScreenProps {

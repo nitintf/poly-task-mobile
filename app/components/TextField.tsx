@@ -1,11 +1,4 @@
-import React, {
-  ComponentType,
-  forwardRef,
-  Ref,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-} from "react"
+import React, { ComponentType, forwardRef, Ref, useImperativeHandle, useRef } from "react"
 import {
   StyleProp,
   TextInput,
@@ -18,7 +11,6 @@ import {
 import { isRTL, translate } from "../i18n"
 import { colors, spacing, typography } from "../theme"
 import { Text, TextProps } from "./Text"
-import { useBottomSheetInternal } from "@gorhom/bottom-sheet"
 
 export interface TextFieldAccessoryProps {
   style: StyleProp<any>
@@ -103,6 +95,8 @@ export interface TextFieldProps extends Omit<TextInputProps, "ref"> {
    * Note: It is a good idea to memoize this.
    */
   LeftAccessory?: ComponentType<TextFieldAccessoryProps>
+
+  variant?: "filled" | "underline"
 }
 
 /**
@@ -132,7 +126,6 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
     ...TextInputProps
   } = props
   const input = useRef<TextInput>()
-  const bottomSheetInternal = useBottomSheetInternal()
 
   const disabled = TextInputProps.editable === false || status === "disabled"
 
@@ -150,6 +143,13 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
     TextInputProps.multiline && { minHeight: 112 },
     LeftAccessory && { paddingStart: 0 },
     RightAccessory && { paddingEnd: 0 },
+    props.variant === "underline" && {
+      backgroundColor: colors.transparent,
+      borderBottomWidth: 0.3,
+      borderColor: colors.palette.neutral700,
+      borderRadius: 0,
+      paddingBottom: spacing.sm,
+    },
     $inputWrapperStyleOverride,
   ]
 
@@ -158,6 +158,11 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
     disabled && { color: colors.textDim },
     isRTL && { textAlign: "right" as TextStyle["textAlign"] },
     TextInputProps.multiline && { height: "auto" },
+    props.variant === "underline" && {
+      backgroundColor: colors.transparent,
+      marginHorizontal: 0,
+      marginVertical: 0,
+    },
     $inputStyleOverride,
   ]
 
@@ -172,22 +177,6 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
 
     input.current?.focus()
   }
-
-  const handleFocus = useCallback(() => {
-    if (bottomSheetInternal == null) {
-      return
-    }
-
-    bottomSheetInternal.shouldHandleKeyboardEvents.value = true
-  }, [bottomSheetInternal])
-
-  const handleBlur = useCallback(() => {
-    if (bottomSheetInternal == null) {
-      return
-    }
-
-    bottomSheetInternal.shouldHandleKeyboardEvents.value = false
-  }, [bottomSheetInternal])
 
   useImperativeHandle(ref, () => input.current)
 
@@ -224,13 +213,11 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
           underlineColorAndroid={colors.transparent}
           textAlignVertical="top"
           placeholder={placeholderContent}
-          placeholderTextColor={colors.textDim}
+          placeholderTextColor={colors.palette.neutral550}
           {...TextInputProps}
           editable={!disabled}
           style={$inputStyles}
           autoCorrect={false}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
         />
 
         {!!RightAccessory && (

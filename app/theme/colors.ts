@@ -45,6 +45,8 @@ const palette = {
 
   overlay20: "rgba(25, 16, 21, 0.2)",
   overlay50: "rgba(25, 16, 21, 0.5)",
+
+  iosSwitchGreen: "#4CD964",
 } as const
 
 export const colors = {
@@ -69,7 +71,7 @@ export const colors = {
   /**
    * The default color of the screen background.
    */
-  background: palette.neutral900,
+  background: "#121212",
   /**
    * The default border color.
    */

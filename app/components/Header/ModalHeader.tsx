@@ -6,13 +6,17 @@ import { Button } from "../Button"
 import { Header } from "./Header"
 import { RightArrowIcon } from "../icons"
 
-export const AccountHeader: React.FC<NativeStackHeaderProps> = (props) => {
+interface ModalHeaderProps extends NativeStackHeaderProps {
+  mainRoute: string
+}
+
+export const ModalHeader: React.FC<ModalHeaderProps> = (props) => {
   return (
     <Header
       containerStyle={$container}
       title={props.options.title || props.route.name}
       LeftActionComponent={
-        props.route.name === "Account" ? null : (
+        props.route.name === props.mainRoute ? null : (
           <Button
             preset="link"
             onPress={() => props.navigation.goBack()}
@@ -24,11 +28,13 @@ export const AccountHeader: React.FC<NativeStackHeaderProps> = (props) => {
                 height={30}
               />
             )}
-          ></Button>
+          >
+            {props.mainRoute}
+          </Button>
         )
       }
       RightActionComponent={
-        props.route.name === "Account" ? (
+        props.route.name === props.mainRoute ? (
           <Button
             onPress={() => props.navigation.goBack()}
             style={{ marginRight: spacing.sm }}

@@ -11,7 +11,7 @@ import {
   View,
   ViewStyle,
 } from "react-native"
-import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated"
+import Animated, { Easing, useAnimatedStyle, withTiming } from "react-native-reanimated"
 import { colors, spacing } from "../theme"
 import { Text, TextProps } from "./Text"
 import { TickIcon } from "./icons"
@@ -383,7 +383,7 @@ function Switch(props: ToggleInputProps) {
   const onBackgroundColor = [
     disabled && colors.transparent,
     status === "error" && colors.errorBackground,
-    colors.palette.secondary500,
+    colors.palette.iosSwitchGreen,
   ].filter(Boolean)[0]
 
   const knobBackgroundColor = (function () {
@@ -417,8 +417,14 @@ function Switch(props: ToggleInputProps) {
       $switchInner?.paddingRight ||
       0) as number
 
-    const start = withTiming(on ? "100%" : "0%")
-    const marginStart = withTiming(on ? -(knobWidth || 0) - offsetRight : 0 + offsetLeft)
+    const start = withTiming(on ? "100%" : "0%", {
+      duration: 200,
+      easing: Easing.in(Easing.ease),
+    })
+    const marginStart = withTiming(on ? -(knobWidth || 0) - offsetRight : 0 + offsetLeft, {
+      duration: 200,
+      easing: Easing.in(Easing.ease),
+    })
 
     return { start, marginStart }
   }, [on, knobWidth])

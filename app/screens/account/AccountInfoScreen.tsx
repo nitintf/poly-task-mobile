@@ -18,13 +18,13 @@ import {
   StarIcon,
 } from "app/components/icons"
 import { useStores } from "app/models"
-import { AppStackScreenProps } from "app/navigators"
+import { AccountSettingScreenProps } from "app/navigators"
 import { colors, spacing } from "app/theme"
 import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
 import { TextStyle, View, ViewStyle } from "react-native"
 
-interface AccountInfoScreenProps extends AppStackScreenProps<"Account"> {}
+interface AccountInfoScreenProps extends AccountSettingScreenProps<"Account"> {}
 
 export const AccountInfoScreen: FC<AccountInfoScreenProps> = observer(function AccountInfoScreen({
   navigation,
@@ -39,7 +39,7 @@ export const AccountInfoScreen: FC<AccountInfoScreenProps> = observer(function A
   }
 
   return (
-    <Screen style={$root} preset="scroll" contentContainerStyle={$containerStyle}>
+    <Screen preset="scroll" contentContainerStyle={$containerStyle}>
       <View style={$detailsContainer}>
         <Avatar source={{ uri: authenticationStore.user?.picture }} size="large" />
         <View>
@@ -134,11 +134,6 @@ export const AccountInfoScreen: FC<AccountInfoScreenProps> = observer(function A
     </Screen>
   )
 })
-
-const $root: ViewStyle = {
-  flex: 1,
-  backgroundColor: colors.palette.neutral800,
-}
 
 const $containerStyle: ViewStyle = {
   paddingHorizontal: spacing.md,

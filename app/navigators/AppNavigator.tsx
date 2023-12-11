@@ -10,16 +10,17 @@ import { useStores } from "../models"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { AccountSettingNavigator } from "./AccountSettingsNavigator"
 import { HomeNavigator } from "./HomeNavigator"
+import { CreateSpaceNavigator } from "./CreateSpaceNavigator"
 
 export type AppStackParamList = {
   Home: undefined
   SignIn: undefined
   Spaces: undefined
   Stats: undefined
-  Account: undefined
   AccountSetting: undefined
-  PushNotification: undefined
   Browse: undefined
+  CreateSpace: undefined
+  Color: undefined
 }
 
 const exitRoutes = Config.exitRoutes
@@ -47,6 +48,9 @@ const AppStack = observer(function AppStack() {
           <Stack.Screen name="Home" component={HomeNavigator} />
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen name="AccountSetting" component={AccountSettingNavigator} />
+          </Stack.Group>
+          <Stack.Group screenOptions={{ presentation: "modal" }}>
+            <Stack.Screen name="CreateSpace" component={CreateSpaceNavigator} />
           </Stack.Group>
         </>
       ) : (

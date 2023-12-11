@@ -1,16 +1,23 @@
 import React from "react"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { AppStackParamList } from "./AppNavigator"
-import { AccountHeader } from "app/components/Header/AccountHeader"
+import { NativeStackScreenProps, createNativeStackNavigator } from "@react-navigation/native-stack"
+import { ModalHeader } from "app/components/Header/ModalHeader"
 import * as Screens from "app/screens"
 
-const AccountSetting = createNativeStackNavigator<AppStackParamList>()
+export type AccountSettingScreenList = {
+  Account: undefined
+  PushNotification: undefined
+}
+
+export type AccountSettingScreenProps<T extends keyof AccountSettingScreenList> =
+  NativeStackScreenProps<AccountSettingScreenList, T>
+
+const AccountSetting = createNativeStackNavigator<AccountSettingScreenList>()
 
 export const AccountSettingNavigator = () => (
   <AccountSetting.Navigator
     screenOptions={{
       headerShown: true,
-      header: (props) => <AccountHeader {...props} />,
+      header: (props) => <ModalHeader {...props} mainRoute="Account" />,
     }}
     initialRouteName="Account"
   >

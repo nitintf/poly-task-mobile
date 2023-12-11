@@ -119,7 +119,7 @@ interface HeaderActionProps {
  */
 export function Header(props: HeaderProps) {
   const {
-    backgroundColor = colors.palette.neutral800,
+    backgroundColor = colors.background,
     LeftActionComponent,
     leftText,
     leftTx,
@@ -219,6 +219,7 @@ const $wrapper: ViewStyle = {
 
 const $container: ViewStyle = {
   width: "100%",
+  paddingBottom: spacing.lg,
 }
 
 const $title: TextStyle = {
