@@ -34,6 +34,10 @@ export interface ItemProps {
 
   text?: string
 
+  textStyle?: StyleProp<TextStyle>
+
+  subText?: string
+
   children?: React.ReactNode
 }
 
@@ -43,10 +47,13 @@ export const Item = observer(function Item({
   children,
   style,
   text,
+  subText,
   hideRightArrow = false,
   onPress,
+  textStyle,
 }: ItemProps) {
   const $styles = [$container, hideRightArrow && !RightAccessory && $containerWithoutArrow, style]
+  const $textStyles = [$text, textStyle]
 
   const Wrapper = onPress ? Pressable : View
 
@@ -54,7 +61,14 @@ export const Item = observer(function Item({
     <Wrapper style={$styles} onPress={onPress}>
       <View style={$leftActionContainer}>
         {!!LeftAccessory && <LeftAccessory style={$leftAccessoryStyle} />}
-        {text && <Text style={$text}>{text}</Text>}
+        <View>
+          {text && <Text style={$textStyles}>{text}</Text>}
+          {subText && (
+            <Text preset="formHelper" style={$subText}>
+              {subText}
+            </Text>
+          )}
+        </View>
       </View>
       {children && children}
       <View style={$rightActionContainer}>
@@ -83,6 +97,13 @@ const $text: TextStyle = {
   fontFamily: typography.primary.normal,
   fontSize: 16,
   color: colors.text,
+}
+
+const $subText: TextStyle = {
+  fontFamily: typography.secondary.light,
+  color: colors.palette.neutral500,
+  fontSize: 12,
+  lineHeight: 15,
 }
 
 const $rightActionContainer: ViewStyle = {

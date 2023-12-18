@@ -2,6 +2,7 @@ import * as React from "react"
 import { StyleProp, TextStyle, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { colors, spacing } from "app/theme"
+import { Text } from "../Text"
 
 export interface GroupProps {
   /**
@@ -28,8 +29,9 @@ export interface GroupProps {
 }
 
 export const Group = observer(function Group(props: GroupProps) {
-  const { style } = props
+  const { style, heading, headingStyle } = props
   const $styles = [$container, style]
+  const $headingStyles = [$heading, headingStyle]
 
   // Convert children into an array and add a border to each child except the last one
   const childrenWithBorder = React.Children.toArray(props.children).map((child, index, array) => {
@@ -44,7 +46,12 @@ export const Group = observer(function Group(props: GroupProps) {
     )
   })
 
-  return <View style={$styles}>{childrenWithBorder}</View>
+  return (
+    <View>
+      {heading && <Text style={$headingStyles}>{heading}</Text>}
+      <View style={$styles}>{childrenWithBorder}</View>
+    </View>
+  )
 })
 
 const $container: ViewStyle = {
@@ -61,6 +68,14 @@ const $childWithBorder: ViewStyle = {
   borderBottomWidth: 0.4,
   borderBottomColor: colors.palette.neutral700,
   paddingBottom: spacing.sm,
+}
+
+const $heading: TextStyle = {
+  color: colors.palette.neutral500,
+  fontSize: 12,
+  textTransform: "uppercase",
+  marginBottom: spacing.xxxs,
+  paddingLeft: spacing.sm,
 }
 
 const $childWithoutBorder: ViewStyle = {}

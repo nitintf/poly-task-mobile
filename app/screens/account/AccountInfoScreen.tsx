@@ -1,12 +1,5 @@
 import { Avatar } from "@ui-kitten/components"
-import {
-  SettingAction,
-  SettingIcon,
-  SettingItem,
-  SettingLabel,
-  SettingsSection,
-} from "app/components/settings"
-import { Text, Toggle, Divider, Screen } from "app/components"
+import { Text, Toggle, Screen, Group, Item } from "app/components"
 import {
   AppsIcon,
   InfoIcon,
@@ -14,7 +7,6 @@ import {
   MailIcon,
   MegaphoneIcon,
   NotificationBellIcon,
-  RightArrowIcon,
   StarIcon,
 } from "app/components/icons"
 import { useStores } from "app/models"
@@ -41,95 +33,61 @@ export const AccountInfoScreen: FC<AccountInfoScreenProps> = observer(function A
   return (
     <Screen preset="scroll" contentContainerStyle={$containerStyle}>
       <View style={$detailsContainer}>
-        <Avatar source={{ uri: authenticationStore.user?.picture }} size="large" />
+        <Avatar source={{ uri: authenticationStore.user?.picture }} size="medium" />
         <View>
-          <Text>{authenticationStore.user.name}</Text>
-          <Text style={$emailText}>{authenticationStore.user.email}</Text>
+          <Text style={$accountText}>{authenticationStore.user.name}</Text>
+          <Text style={[$emailText, $accountText]}>{authenticationStore.user.email}</Text>
         </View>
       </View>
-      <Divider />
-      <SettingsSection title="Settings">
-        <>
-          <SettingItem onPress={() => navigation.navigate("PushNotification")}>
-            <SettingIcon>
-              <NotificationBellIcon />
-            </SettingIcon>
-            <SettingLabel>Push Noitification</SettingLabel>
-            <SettingAction>
-              <>
-                <Text style={$actionHelperText}>{settingsStore.pushNotificationDisplayText}</Text>
-                <RightArrowIcon />
-              </>
-            </SettingAction>
-          </SettingItem>
-          <SettingItem>
-            <SettingIcon>
-              <LockIcon />
-            </SettingIcon>
-            <SettingLabel subLabel="Quick unlock with Face ID or passcode">
-              Auto-lock after 2 mins
-            </SettingLabel>
-            <SettingAction>
-              <Toggle
-                variant="switch"
-                value={settingsStore.autoLock}
-                onValueChange={() => settingsStore.toggleAutoLock()}
-              />
-            </SettingAction>
-          </SettingItem>
-          <SettingItem>
-            <SettingIcon>
-              <MegaphoneIcon />
-            </SettingIcon>
-            <SettingLabel>Shake to send feedback</SettingLabel>
-            <SettingAction>
-              <Toggle
-                value={settingsStore.shakeToSendFeedback}
-                variant="switch"
-                onValueChange={() => settingsStore.toggleShakeToSendFeedback()}
-              />
-            </SettingAction>
-          </SettingItem>
-        </>
-      </SettingsSection>
-      <SettingsSection title="Help and Feedback">
-        <>
-          <SettingItem>
-            <SettingIcon>
-              <MailIcon />
-            </SettingIcon>
-            <SettingLabel>Send Feedback</SettingLabel>
-            <SettingAction />
-          </SettingItem>
-          <SettingItem>
-            <SettingIcon>
-              <StarIcon />
-            </SettingIcon>
-            <SettingLabel>Rate Us</SettingLabel>
-            <SettingAction />
-          </SettingItem>
+      <Group heading="Settings">
+        <Item
+          LeftAccessory={NotificationBellIcon}
+          text="Push Notification"
+          RightAccessory={() => (
+            <Text style={$actionHelperText}>{settingsStore.pushNotificationDisplayText}</Text>
+          )}
+          onPress={() => navigation.navigate("PushNotification")}
+        />
+        <Item
+          subText="Quick unlock with Face ID or passcode"
+          hideRightArrow
+          LeftAccessory={LockIcon}
+          text="Auto-lock after 2 mins"
+          onPress={() => navigation.navigate("PushNotification")}
+          RightAccessory={observer(() => (
+            <Toggle
+              variant="switch"
+              value={settingsStore.autoLock}
+              onValueChange={() => settingsStore.toggleAutoLock()}
+            />
+          ))}
+        />
+        <Item
+          hideRightArrow
+          LeftAccessory={MegaphoneIcon}
+          text="Shake to send feedback"
+          onPress={() => navigation.navigate("PushNotification")}
+          RightAccessory={observer(() => (
+            <Toggle
+              value={settingsStore.shakeToSendFeedback}
+              variant="switch"
+              onValueChange={() => settingsStore.toggleShakeToSendFeedback()}
+            />
+          ))}
+        />
+      </Group>
 
-          <SettingItem>
-            <SettingIcon>
-              <AppsIcon />
-            </SettingIcon>
-            <SettingLabel>More Poly apps</SettingLabel>
-            <SettingAction />
-          </SettingItem>
+      <Group heading="HELP AND FEEDBACK">
+        <Item text="Send Feedback" LeftAccessory={MailIcon} />
+        <Item text="Rate Us" LeftAccessory={StarIcon} />
+        <Item text="More Poly Apps" LeftAccessory={AppsIcon} />
+        <Item text="About" LeftAccessory={InfoIcon} />
+      </Group>
 
-          <SettingItem>
-            <SettingIcon>
-              <InfoIcon />
-            </SettingIcon>
-            <SettingLabel>About</SettingLabel>
-            <SettingAction />
-          </SettingItem>
-        </>
-      </SettingsSection>
-      <SettingItem onPress={logout}>
-        <SettingLabel styles={$logoutText}>Logout</SettingLabel>
-      </SettingItem>
-      <Divider />
+      <Group>
+        <Item text="Logout" textStyle={$logoutText} onPress={logout} hideRightArrow />
+      </Group>
+
       <Text style={$versionText}>V 1.0.0</Text>
     </Screen>
   )
@@ -142,7 +100,6 @@ const $containerStyle: ViewStyle = {
 
 const $logoutText: TextStyle = {
   color: colors.error,
-  marginTop: -spacing.md - 10,
 }
 
 const $actionHelperText: TextStyle = {
@@ -152,15 +109,16 @@ const $actionHelperText: TextStyle = {
 }
 
 const $detailsContainer: ViewStyle = {
-  flexDirection: "row",
-  gap: spacing.md,
-  marginVertical: spacing.md,
+  gap: spacing.xxs,
   alignItems: "center",
+  justifyContent: "center",
+  marginBottom: spacing.lg,
 }
 
 const $emailText: TextStyle = {
   color: colors.palette.neutral500,
   fontSize: 14,
+  lineHeight: 14,
 }
 
 const $versionText: TextStyle = {
@@ -168,4 +126,8 @@ const $versionText: TextStyle = {
   fontSize: 14,
   textAlign: "center",
   marginBottom: spacing.md,
+}
+
+const $accountText: TextStyle = {
+  textAlign: "center",
 }

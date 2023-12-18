@@ -1,10 +1,10 @@
 import React, { FC, useMemo } from "react"
 import { observer } from "mobx-react-lite"
-import { TextStyle, ViewStyle } from "react-native"
+import { ViewStyle } from "react-native"
 import { CreateSpaceScreenProps as CreateSpaceNavigatorProps } from "app/navigators"
-import { Button, Group, Header, Item, Screen, Text, TextField, Toggle } from "app/components"
+import { Button, Group, Header, Item, Screen, TextField, Toggle } from "app/components"
 import { colors, spacing } from "app/theme"
-import { ColorIcon, HeartIcon, ListIcon } from "app/components/icons"
+import { ColorIcon, HeartIcon } from "app/components/icons"
 import { useStores } from "app/models"
 import { useFocusEffect } from "@react-navigation/native"
 import ColorPicker, { Preview } from "reanimated-color-picker"
@@ -16,10 +16,12 @@ export const CreateSpaceScreen: FC<CreateSpaceScreenProps> = observer(function C
 }) {
   const { spacesStore } = useStores()
 
+  const onCreateSpace = () => {}
+
   const RightHeaderAction = useMemo(() => {
     const isDisabled = spacesStore.newSpace.name.trim().length === 0
     return (
-      <Button preset="link" disabled={isDisabled}>
+      <Button preset="link" disabled={isDisabled} onPress={onCreateSpace}>
         Done
       </Button>
     )
@@ -83,11 +85,12 @@ export const CreateSpaceScreen: FC<CreateSpaceScreenProps> = observer(function C
         </Group>
 
         <Group>
-          <Item
+          {/* TODO: add parent space or nested space feature */}
+          {/* <Item
             text="Parent space"
             LeftAccessory={() => <ListIcon stroke={colors.palette.neutral500} />}
             RightAccessory={() => <Text style={$rightAccessoryText}>No Parent</Text>}
-          />
+          /> */}
           <Item
             text="Favorite"
             LeftAccessory={() => <HeartIcon fill={colors.palette.neutral500} />}
@@ -113,11 +116,6 @@ const $header: ViewStyle = {
 const $containerStyle: ViewStyle = {
   paddingHorizontal: spacing.md,
   paddingBottom: spacing.xxl,
-}
-
-const $rightAccessoryText: TextStyle = {
-  fontSize: 15,
-  color: colors.textDim,
 }
 
 const $previewColorStyles: ViewStyle = {

@@ -1,5 +1,6 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { Instance, SnapshotIn, SnapshotOut, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
+import { supabase } from "app/services/supabase"
 
 export const SpaceModel = types.model("Space").props({
   id: types.optional(types.identifier, ""),
@@ -68,6 +69,22 @@ export const SpacesModel = types
         color: "#ccc",
       }
     },
+    createNewSpace: flow(function* createNewSpace() {
+      try {
+        const space = self.newSpace
+        const { data, error } = yield supabase
+          .from("spaces")
+          .insert({
+            name: space.name,
+            favorite: space.isFavorite,
+            color: space.color,
+          })
+          .select()
+        console.log("data, error :>> ", data, error)
+      } catch (error) {
+        console.log("error :>> ", error)
+      }
+    }),
   }))
 
 export interface Space extends Instance<typeof SpaceModel> {}
