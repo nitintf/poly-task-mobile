@@ -1,53 +1,47 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { supabase } from "app/services/supabase"
+import { getSpaces } from "app/services/supabase/spaces"
 
 export const SpaceModel = types.model("Space").props({
-  id: types.optional(types.identifier, ""),
+  id: types.integer,
   name: types.maybe(types.string),
   isFavorite: types.maybe(types.boolean),
   parentSpace: types.maybeNull(types.string),
   color: types.maybe(types.string),
 })
 
-/**
- * Model description here for TypeScript hints.
- */
 export const SpacesModel = types
   .model("Spaces")
   .props({
     spaces: types.array(SpaceModel),
     newSpace: types.optional(SpaceModel, {
+      id: 0,
       name: "",
       color: "#ccc",
       isFavorite: false,
       parentSpace: null,
     }),
+    isRefresh: types.optional(types.boolean, false),
   })
   .actions(withSetPropAction)
-  .views((self) => ({
-    getSpaces(): Space[] {
-      return [...self.spaces]
-    },
-  }))
   .actions((self) => ({
     addSpace(space: Space) {
-      self.spaces.push(space)
       self.newSpace = {
-        id: "",
+        id: 0,
         name: "",
         isFavorite: false,
         parentSpace: null,
         color: "#ccc",
       }
+      self.spaces.push(space)
     },
-    removeSpace(id: string) {
+    removeSpace(id: number) {
       const index = self.spaces.findIndex((s) => s.id === id)
       if (index !== -1) {
         self.spaces.splice(index, 1)
       }
     },
-    updateSpace(id: string, updatedSpace: Space) {
+    updateSpace(id: number, updatedSpace: Space) {
       const index = self.spaces.findIndex((s) => s.id === id)
       if (index >= 0) {
         self.spaces[index] = updatedSpace
@@ -62,28 +56,20 @@ export const SpacesModel = types
     },
     resetNewSpace() {
       self.newSpace = {
-        id: "",
+        id: 0,
         name: "",
         isFavorite: false,
         parentSpace: null,
         color: "#ccc",
       }
     },
-    createNewSpace: flow(function* createNewSpace() {
-      try {
-        const space = self.newSpace
-        const { data, error } = yield supabase
-          .from("spaces")
-          .insert({
-            name: space.name,
-            favorite: space.isFavorite,
-            color: space.color,
-          })
-          .select()
-        console.log("data, error :>> ", data, error)
-      } catch (error) {
-        console.log("error :>> ", error)
-      }
+    getNewSpace() {
+      return self.newSpace
+    },
+
+    getAllSpaces: flow(function* () {
+      const spaces = yield getSpaces()
+      self.spaces = spaces
     }),
   }))
 

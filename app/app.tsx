@@ -10,6 +10,7 @@ import { AppNavigator } from "./navigators"
 import { ErrorBoundary } from "./screens/error/ErrorBoundary"
 import Config from "./config"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
+import { NotifierWrapper } from "react-native-notifier"
 if (__DEV__) {
   require("./devtools/ReactotronConfig.ts")
 }
@@ -57,7 +58,9 @@ function App(props: AppProps) {
       <ErrorBoundary catchErrors={Config.catchErrors}>
         <ApplicationProvider {...eva} theme={eva.light}>
           <BottomSheetModalProvider>
-            <AppNavigator linking={linking} />
+            <NotifierWrapper>
+              <AppNavigator linking={linking} />
+            </NotifierWrapper>
           </BottomSheetModalProvider>
         </ApplicationProvider>
       </ErrorBoundary>

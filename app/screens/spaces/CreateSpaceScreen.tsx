@@ -8,6 +8,7 @@ import { ColorIcon, HeartIcon } from "app/components/icons"
 import { useStores } from "app/models"
 import { useFocusEffect } from "@react-navigation/native"
 import ColorPicker, { Preview } from "reanimated-color-picker"
+import { createSpace } from "app/services/supabase/spaces"
 
 interface CreateSpaceScreenProps extends CreateSpaceNavigatorProps<"CreateSpaceForm"> {}
 
@@ -16,7 +17,18 @@ export const CreateSpaceScreen: FC<CreateSpaceScreenProps> = observer(function C
 }) {
   const { spacesStore } = useStores()
 
-  const onCreateSpace = () => {}
+  const onCreateSpace = async () => {
+    const newSpace = { ...spacesStore.newSpace }
+
+    navigation.goBack()
+    spacesStore.addSpace(newSpace)
+
+    const space = await createSpace(newSpace)
+
+    if (!space) {
+      spacesStore.removeSpace(newSpace.id)
+    }
+  }
 
   const RightHeaderAction = useMemo(() => {
     const isDisabled = spacesStore.newSpace.name.trim().length === 0

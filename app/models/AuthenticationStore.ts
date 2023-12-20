@@ -3,6 +3,7 @@ import { Instance, SnapshotOut, flow, types } from "mobx-state-tree"
 import * as WebBrowser from "expo-web-browser"
 import { supabase } from "app/services/supabase"
 import { runInAction } from "mobx"
+import { logError } from "app/utils/handleNetworkErrors"
 
 interface User {
   email: string
@@ -47,13 +48,13 @@ export const AuthenticationStoreModel = types
               store.user = data.user.user_metadata as User
             })
           } else {
-            console.error("Error during authentication: ", error)
+            logError(error, "Error during authentication")
           }
         } else {
-          console.error("Authentication failed")
+          logError("Authentication failed")
         }
       } catch (error) {
-        console.error("Error in signInWithGoogle: ", error)
+        logError(error, "Error in signInWithGoogle")
       }
     }),
     logout: flow(function* logout() {
@@ -65,7 +66,7 @@ export const AuthenticationStoreModel = types
           store.user = undefined
         })
       } catch (error) {
-        console.error("Error in logout: ", error)
+        logError(error, "Error in logout")
       }
     }),
   }))
