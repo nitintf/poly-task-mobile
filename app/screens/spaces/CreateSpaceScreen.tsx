@@ -15,18 +15,23 @@ interface CreateSpaceScreenProps extends CreateSpaceNavigatorProps<"CreateSpaceF
 export const CreateSpaceScreen: FC<CreateSpaceScreenProps> = observer(function CreateSpaceScreen({
   navigation,
 }) {
-  const { spacesStore } = useStores()
+  const {
+    spacesStore,
+    authenticationStore: { user },
+  } = useStores()
 
   const onCreateSpace = async () => {
     const newSpace = { ...spacesStore.newSpace }
 
-    navigation.goBack()
     spacesStore.addSpace(newSpace)
+    navigation.goBack()
 
-    const space = await createSpace(newSpace)
+    const space = await createSpace(newSpace, user.id)
 
     if (!space) {
       spacesStore.removeSpace(newSpace.id)
+    } else {
+      spacesStore.getAllSpaces(user.id)
     }
   }
 

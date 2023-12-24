@@ -1,10 +1,10 @@
 import { Space } from "app/models"
 import { supabase } from "."
 import { logError } from "app/utils/handleNetworkErrors"
-import { Notifier, NotifierComponents } from "react-native-notifier"
 import { mapToSpace } from "app/utils/space"
+import AppNotification from "app/utils/notification"
 
-export async function createSpace(space: Space): Promise<Space | null> {
+export async function createSpace(space: Space, userId: string): Promise<Space | null> {
   try {
     const { data, error } = await supabase
       .from("spaces")
@@ -14,6 +14,7 @@ export async function createSpace(space: Space): Promise<Space | null> {
           favorite: space.isFavorite,
           color: space.color,
           parent_space: space.parentSpace,
+          user_id: userId,
         },
       ])
       .select()
@@ -23,26 +24,27 @@ export async function createSpace(space: Space): Promise<Space | null> {
       return null
     }
 
-    Notifier.showNotification({
+    AppNotification.show({
       title: "Space Created",
-      Component: NotifierComponents.Notification,
-      componentProps: {},
     })
 
     return mapToSpace(data[0])
   } catch (error) {
     logError(error)
-    Notifier.showNotification({
+    AppNotification.show({
       title: "Oops! Something went wrong while creating the space.",
-      Component: NotifierComponents.Notification,
     })
     return null
   }
 }
 
-export async function getSpaces(): Promise<Space[]> {
+export async function getSpaces(userId: string): Promise<Space[]> {
   try {
-    const { data, error } = await supabase.from("spaces").select("*")
+    const { data, error } = await supabase
+      .from("spaces")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: true })
     if (error) {
       logError(error)
       return []
@@ -53,5 +55,41 @@ export async function getSpaces(): Promise<Space[]> {
   } catch (error) {
     logError(error)
     return []
+  }
+}
+
+export async function deleteSpace(id: string | number): Promise<void> {
+  try {
+    const { error } = await supabase.from("spaces").delete().eq("id", id)
+
+    if (error) {
+      logError(error)
+    }
+  } catch (error) {
+    logError(error)
+  }
+}
+
+export async function toggleFavoriteSpace(
+  id: string | number,
+  value: boolean,
+): Promise<Space | null> {
+  try {
+    const { data: updatedSpace, error } = await supabase
+      .from("spaces")
+      .update({ favorite: value })
+      .eq("id", id)
+      .select()
+      .single()
+
+    if (error) {
+      logError(error)
+      return null
+    }
+
+    return mapToSpace(updatedSpace)
+  } catch (error) {
+    logError(error)
+    return null
   }
 }

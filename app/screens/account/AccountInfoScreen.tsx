@@ -21,12 +21,13 @@ interface AccountInfoScreenProps extends AccountSettingScreenProps<"Account"> {}
 export const AccountInfoScreen: FC<AccountInfoScreenProps> = observer(function AccountInfoScreen({
   navigation,
 }) {
-  const { settingsStore, authenticationStore } = useStores()
+  const { settingsStore, authenticationStore, spacesStore } = useStores()
 
   const logout = () => {
     navigation.goBack()
 
     settingsStore.reset()
+    spacesStore.reset()
     authenticationStore.logout()
   }
 

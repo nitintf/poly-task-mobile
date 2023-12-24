@@ -1,54 +1,96 @@
-import React, { FC, useCallback, useEffect, useState } from "react"
-import { observer } from "mobx-react-lite"
-import { RefreshControl, ScrollView, ViewStyle } from "react-native"
-import { AppStackScreenProps } from "app/navigators"
-import { Group, Item, Screen, Text, TopHeader } from "app/components"
-import { spacing } from "app/theme"
+import { Divider, Screen, Text, TopHeader } from "app/components"
+import { SpaceListItem } from "app/components/feature/space/ListItem"
 import { AddIcon } from "app/components/icons"
-import { useStores } from "app/models"
+import { Space, useStores } from "app/models"
+import { AppStackScreenProps } from "app/navigators"
+import { spacing } from "app/theme"
+import { observer } from "mobx-react-lite"
+import React, { FC, useCallback, useEffect, useState } from "react"
+import { RefreshControl, TextStyle, View, ViewStyle } from "react-native"
+import { FlatList } from "react-native-gesture-handler"
+import { FlashList } from "@shopify/flash-list"
+import { NoListIcon } from "app/components/icons/NoListIcon"
 
 interface SpacesScreenProps extends AppStackScreenProps<"Spaces"> {}
 
 export const SpacesScreen: FC<SpacesScreenProps> = observer(function SpacesScreen({ navigation }) {
   const [isRefresh, setIsRefresh] = useState(false)
-  const { spacesStore } = useStores()
+  const {
+    spacesStore,
+    authenticationStore: { user },
+  } = useStores()
 
   useEffect(() => {
-    spacesStore.getAllSpaces()
+    spacesStore.getAllSpaces(user.id)
   }, [])
 
   const onRefreshList = useCallback(async () => {
     setIsRefresh(true)
-    spacesStore.getAllSpaces().then(() => {
+    spacesStore.getAllSpaces(user.id).then(() => {
       setIsRefresh(false)
     })
   }, [])
 
+  const _renderItem = ({ item }: { item: Space }) => {
+    return <SpaceListItem {...item} applyTopRadius={false} />
+  }
+
+  const _renderComponent = () => {
+    return (
+      <>
+        <Text text="Spaces" preset="heading" style={$topHeaderStyles} />
+
+        {spacesStore.spaces.length === 0 ? (
+          <View style={$noListContainer}>
+            <NoListIcon />
+            <Text preset="subheading" style={$textCenter}>
+              Welcome to your workspace
+            </Text>
+            <Text preset="formHelper" style={$textCenter}>
+              Create Spaces to manage and organize your tasks.
+            </Text>
+          </View>
+        ) : (
+          <FlatList<Space>
+            data={spacesStore.spaces}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={_renderItem}
+            ItemSeparatorComponent={() => <Divider />}
+            contentContainerStyle={$listStyle}
+            scrollEnabled={false}
+          />
+        )}
+      </>
+    )
+  }
+
   return (
-    <Screen contentContainerStyle={$screenContentContainer} style={$root} preset="fixed">
+    <Screen
+      contentContainerStyle={$screenContentContainer}
+      style={$root}
+      preset="fixed"
+      safeAreaEdges={["top"]}
+    >
       <TopHeader
         navigate={navigation.navigate}
         actions={[
           { Icon: AddIcon, onPress: () => navigation.navigate("CreateSpace"), name: "add-spaces" },
         ]}
       />
-      <ScrollView
+      <FlashList
+        data={[]}
+        renderItem={() => <></>}
+        estimatedItemSize={200}
+        ListHeaderComponent={_renderComponent}
         refreshControl={<RefreshControl refreshing={isRefresh} onRefresh={onRefreshList} />}
-      >
-        <Text text="Spaces" preset="heading" />
-        {
-          <Group style={$spacesListStyle}>
-            {spacesStore.spaces.map((space) => (
-              <Item
-                key={space.id}
-                text={space.name}
-                hideRightArrow
-                LeftAccessory={() => <Text style={{ color: space.color }}>#</Text>}
-              />
-            ))}
-          </Group>
-        }
-      </ScrollView>
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      />
+
+      {/* TODO: spaces don't get updated inside flash or flat list if we dont do this */}
+      {spacesStore.spaces.map((space) => {
+        return <React.Fragment key={space.id}></React.Fragment>
+      })}
     </Screen>
   )
 })
@@ -58,11 +100,23 @@ const $root: ViewStyle = {
 }
 
 const $screenContentContainer: ViewStyle = {
-  paddingVertical: spacing.xxxl,
   paddingHorizontal: spacing.md,
   flex: 1,
 }
 
-const $spacesListStyle: ViewStyle = {
+const $listStyle: ViewStyle = {
+  borderRadius: spacing.md,
+  overflow: "hidden",
+}
+
+const $topHeaderStyles: ViewStyle = {
+  marginBottom: spacing.md,
+}
+
+const $textCenter: TextStyle = {
+  textAlign: "center",
+}
+
+const $noListContainer: ViewStyle = {
   marginTop: spacing.lg,
 }

@@ -9,6 +9,7 @@ interface User {
   email: string
   name: string
   picture: string
+  id: string
 }
 
 export const AuthenticationStoreModel = types
@@ -45,7 +46,7 @@ export const AuthenticationStoreModel = types
             runInAction(() => {
               store.authToken = params.access_token
               store.refreshToken = params.refresh_token
-              store.user = data.user.user_metadata as User
+              store.user = { ...(data.user.user_metadata as User), id: data.user.id }
             })
           } else {
             logError(error, "Error during authentication")

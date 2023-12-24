@@ -1,4 +1,4 @@
-import { colors, spacing } from "app/theme"
+import { colors } from "app/theme"
 import * as React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { Divider as DividerRN } from "@ui-kitten/components"
@@ -15,8 +15,7 @@ export const Divider = (props: DividerProps) => {
 }
 
 const $container: ViewStyle = {
-  height: 0.5,
-  width: "100%",
-  backgroundColor: colors.palette.neutral500,
-  marginVertical: spacing.md,
+  height: 1,
+  flex: 1,
+  backgroundColor: colors.palette.neutral650,
 }

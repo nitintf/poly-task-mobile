@@ -43,6 +43,7 @@ const $topContainer: ViewStyle = {
   flexDirection: "row",
   justifyContent: "space-between",
   marginBottom: spacing.sm,
+  backgroundColor: "transparent",
 }
 
 const $iconContainer: ViewStyle = {

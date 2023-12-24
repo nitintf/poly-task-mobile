@@ -86,6 +86,7 @@ export const Item = observer(function Item({
 const $container: ViewStyle = {
   justifyContent: "space-between",
   flexDirection: "row",
+  backgroundColor: colors.palette.neutral800,
 }
 
 const $containerWithoutArrow: ViewStyle = {

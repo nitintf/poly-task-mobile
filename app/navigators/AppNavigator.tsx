@@ -40,7 +40,10 @@ const AppStack = observer(function AppStack() {
 
   return (
     <Stack.Navigator
-      screenOptions={{ navigationBarColor: colors.background, headerShown: false }}
+      screenOptions={{
+        navigationBarColor: colors.background,
+        headerShown: false,
+      }}
       initialRouteName={isAuthenticated ? "Home" : "SignIn"}
     >
       {isAuthenticated ? (

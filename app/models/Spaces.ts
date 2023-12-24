@@ -1,6 +1,6 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { getSpaces } from "app/services/supabase/spaces"
+import { getSpaces, toggleFavoriteSpace } from "app/services/supabase/spaces"
 
 export const SpaceModel = types.model("Space").props({
   id: types.integer,
@@ -67,10 +67,36 @@ export const SpacesModel = types
       return self.newSpace
     },
 
-    getAllSpaces: flow(function* () {
-      const spaces = yield getSpaces()
+    toggleFavorite: flow(function* (id: number) {
+      const index = self.spaces.findIndex((s) => s.id === id)
+      const space = self.spaces[index]
+      const originalIsFav = space.isFavorite
+
+      self.spaces[index] = { ...space, isFavorite: !originalIsFav }
+
+      const updatedSpace = yield toggleFavoriteSpace(id, !originalIsFav)
+
+      if (!updatedSpace) {
+        self.spaces[index] = { ...space, isFavorite: originalIsFav }
+      }
+    }),
+
+    getAllSpaces: flow(function* (userId: string) {
+      const spaces = yield getSpaces(userId)
       self.spaces = spaces
     }),
+
+    reset() {
+      self.spaces.clear()
+      self.newSpace = {
+        id: 0,
+        name: "",
+        isFavorite: false,
+        parentSpace: null,
+        color: "#ccc",
+      }
+      self.isRefresh = false
+    },
   }))
 
 export interface Space extends Instance<typeof SpaceModel> {}
