@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite"
 import React from "react"
 import { useColorScheme } from "react-native"
 import Config from "../config"
-import { useStores } from "../models"
+import { Space, useStores } from "app/models"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { AccountSettingNavigator } from "./AccountSettingsNavigator"
 import { HomeNavigator } from "./HomeNavigator"
@@ -19,7 +19,7 @@ export type AppStackParamList = {
   Stats: undefined
   AccountSetting: undefined
   Browse: undefined
-  CreateSpace: undefined
+  SpaceForm: { isUpdateForm: boolean; updatingSpaceData?: Space }
   Color: undefined
 }
 
@@ -53,7 +53,11 @@ const AppStack = observer(function AppStack() {
             <Stack.Screen name="AccountSetting" component={AccountSettingNavigator} />
           </Stack.Group>
           <Stack.Group screenOptions={{ presentation: "modal" }}>
-            <Stack.Screen name="CreateSpace" component={CreateSpaceNavigator} />
+            <Stack.Screen
+              name="SpaceForm"
+              component={CreateSpaceNavigator}
+              initialParams={{ isUpdateForm: false, updatingSpaceData: null }}
+            />
           </Stack.Group>
         </>
       ) : (

@@ -1,6 +1,6 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { getSpaces, toggleFavoriteSpace } from "app/services/supabase/spaces"
+import { getSpaces, toggleFavoriteSpace, updateSpace } from "app/services/supabase/spaces"
 
 export const SpaceModel = types.model("Space").props({
   id: types.integer,
@@ -41,12 +41,19 @@ export const SpacesModel = types
         self.spaces.splice(index, 1)
       }
     },
-    updateSpace(id: number, updatedSpace: Space) {
-      const index = self.spaces.findIndex((s) => s.id === id)
+    updateSpaceInSpaces: flow(function* (updatedSpace: Space) {
+      const index = self.spaces.findIndex((s) => s.id === updatedSpace.id)
+      const oldSpace = self.spaces[index]
       if (index >= 0) {
         self.spaces[index] = updatedSpace
       }
-    },
+
+      const newUpdatedSpace = yield updateSpace(updatedSpace)
+
+      if (!newUpdatedSpace) {
+        self.spaces[index] = oldSpace
+      }
+    }),
     // Action to update fields of the newSpace
     updateNewSpaceField(field: keyof Space, value: string | boolean) {
       self.newSpace = { ...self.newSpace, [field]: value }
@@ -96,6 +103,10 @@ export const SpacesModel = types
         color: "#ccc",
       }
       self.isRefresh = false
+    },
+
+    setNewSpace(space: Space) {
+      self.newSpace = space
     },
   }))
 

@@ -33,7 +33,7 @@ const getContainerStyleClassicWithOverSwipe = (translateY: Animated.Value) => ({
   // unset "top" property that was used in default styles
   top: undefined,
   // add bottom margin
-  bottom: 50,
+  bottom: 100,
 })
 
 export default class AppNotification {

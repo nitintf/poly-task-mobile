@@ -93,3 +93,29 @@ export async function toggleFavoriteSpace(
     return null
   }
 }
+
+export async function updateSpace(space: Space): Promise<Space | null> {
+  try {
+    const { data: updatedSpace, error } = await supabase
+      .from("spaces")
+      .update({
+        name: space.name,
+        favorite: space.isFavorite,
+        color: space.color,
+        parent_space: space.parentSpace,
+      })
+      .eq("id", space.id)
+      .select()
+      .single()
+
+    if (error) {
+      logError(error)
+      return null
+    }
+
+    return mapToSpace(updatedSpace)
+  } catch (error) {
+    logError(error)
+    return null
+  }
+}

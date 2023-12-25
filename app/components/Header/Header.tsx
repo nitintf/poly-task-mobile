@@ -219,7 +219,6 @@ const $wrapper: ViewStyle = {
 
 const $container: ViewStyle = {
   width: "100%",
-  paddingBottom: spacing.lg,
 }
 
 const $title: TextStyle = {

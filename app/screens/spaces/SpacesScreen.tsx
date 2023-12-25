@@ -51,14 +51,42 @@ export const SpacesScreen: FC<SpacesScreenProps> = observer(function SpacesScree
             </Text>
           </View>
         ) : (
-          <FlatList<Space>
-            data={spacesStore.spaces}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={_renderItem}
-            ItemSeparatorComponent={() => <Divider />}
-            contentContainerStyle={$listStyle}
-            scrollEnabled={false}
-          />
+          <View>
+            {spacesStore.spaces.filter((space) => space.isFavorite).length > 0 && (
+              <>
+                <Text style={$listHeader} preset="formLabel">
+                  Favorites
+                </Text>
+                <FlatList<Space>
+                  data={spacesStore.spaces.filter((space) => space.isFavorite)}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={_renderItem}
+                  ItemSeparatorComponent={() => <Divider />}
+                  contentContainerStyle={$listStyle}
+                  scrollEnabled={false}
+                />
+              </>
+            )}
+            <Text
+              style={[
+                $listHeader,
+                spacesStore.spaces.filter((space) => space.isFavorite).length > 0
+                  ? $spacesText
+                  : {},
+              ]}
+              preset="formLabel"
+            >
+              Your Spaces
+            </Text>
+            <FlatList<Space>
+              data={spacesStore.spaces}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={_renderItem}
+              ItemSeparatorComponent={() => <Divider />}
+              contentContainerStyle={$listStyle}
+              scrollEnabled={false}
+            />
+          </View>
         )}
       </>
     )
@@ -74,7 +102,11 @@ export const SpacesScreen: FC<SpacesScreenProps> = observer(function SpacesScree
       <TopHeader
         navigate={navigation.navigate}
         actions={[
-          { Icon: AddIcon, onPress: () => navigation.navigate("CreateSpace"), name: "add-spaces" },
+          {
+            Icon: AddIcon,
+            onPress: () => navigation.navigate("SpaceForm", { isUpdateForm: false }),
+            name: "add-spaces",
+          },
         ]}
       />
       <FlashList
@@ -119,4 +151,13 @@ const $textCenter: TextStyle = {
 
 const $noListContainer: ViewStyle = {
   marginTop: spacing.lg,
+}
+
+const $listHeader: TextStyle = {
+  paddingLeft: spacing.md,
+  marginBottom: spacing.sm,
+}
+
+const $spacesText: TextStyle = {
+  marginTop: spacing.xl,
 }

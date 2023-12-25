@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from "react"
+import React, { FC, useEffect, useMemo } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle } from "react-native"
 import { CreateSpaceScreenProps as CreateSpaceNavigatorProps } from "app/navigators"
@@ -10,11 +10,11 @@ import { useFocusEffect } from "@react-navigation/native"
 import ColorPicker, { Preview } from "reanimated-color-picker"
 import { createSpace } from "app/services/supabase/spaces"
 
-interface CreateSpaceScreenProps extends CreateSpaceNavigatorProps<"CreateSpaceForm"> {}
+interface SpaceFormScreenProps extends CreateSpaceNavigatorProps<"SpaceFormScreen"> {}
 
-export const CreateSpaceScreen: FC<CreateSpaceScreenProps> = observer(function CreateSpaceScreen({
-  navigation,
-}) {
+export const SpaceFormScreen: FC<SpaceFormScreenProps> = observer(function ({ navigation, route }) {
+  const { params } = route
+
   const {
     spacesStore,
     authenticationStore: { user },
@@ -35,19 +35,33 @@ export const CreateSpaceScreen: FC<CreateSpaceScreenProps> = observer(function C
     }
   }
 
+  const onUpdateSpace = () => {
+    const newSpace = { ...spacesStore.newSpace }
+
+    navigation.goBack()
+    spacesStore.updateSpaceInSpaces(newSpace)
+  }
+
   const RightHeaderAction = useMemo(() => {
     const isDisabled = spacesStore.newSpace.name.trim().length === 0
+    const onPress = params.isUpdateForm ? onUpdateSpace : onCreateSpace
     return (
-      <Button preset="link" disabled={isDisabled} onPress={onCreateSpace}>
-        Done
+      <Button preset="link" disabled={isDisabled} onPress={onPress}>
+        {params.isUpdateForm ? "Update" : "Done"}
       </Button>
     )
-  }, [spacesStore.newSpace.name])
+  }, [spacesStore.newSpace.name, params.isUpdateForm])
 
   const onCancel = () => {
     navigation.goBack()
     spacesStore.resetNewSpace()
   }
+
+  useEffect(() => {
+    if (params?.isUpdateForm && params?.updatingSpaceData) {
+      spacesStore.setNewSpace(params?.updatingSpaceData)
+    }
+  }, [])
 
   useFocusEffect(
     React.useCallback(() => {
@@ -62,7 +76,7 @@ export const CreateSpaceScreen: FC<CreateSpaceScreenProps> = observer(function C
   return (
     <>
       <Header
-        title="Create Space"
+        title={params?.isUpdateForm ? "Update Space" : "Create Space"}
         containerStyle={$header}
         RightActionComponent={RightHeaderAction}
         LeftActionComponent={

@@ -12,7 +12,12 @@ interface HomeScreenProps extends AppStackScreenProps<"Home"> {}
 
 export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ navigation }) {
   return (
-    <Screen contentContainerStyle={$screenContentContainer} style={$root} preset="auto">
+    <Screen
+      contentContainerStyle={$screenContentContainer}
+      style={$root}
+      preset="auto"
+      safeAreaEdges={["top"]}
+    >
       <TopHeader
         navigate={navigation.navigate}
         actions={[
@@ -45,6 +50,5 @@ const $progressBar: ViewStyle = {
 }
 
 const $screenContentContainer: ViewStyle = {
-  paddingVertical: spacing.xxxl,
   paddingHorizontal: spacing.md,
 }

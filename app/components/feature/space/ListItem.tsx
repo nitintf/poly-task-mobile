@@ -10,6 +10,8 @@ import { observer } from "mobx-react-lite"
 import { deleteSpace } from "app/services/supabase/spaces"
 import Animated, { FadeOutUp } from "react-native-reanimated"
 import { delay } from "app/utils/delay"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { AppStackParamList } from "app/navigators"
 
 interface Props extends Space {
   applyTopRadius: boolean
@@ -19,6 +21,7 @@ export const SpaceListItem = observer(({ id, color, name, isFavorite, applyTopRa
     spacesStore,
     authenticationStore: { user },
   } = useStores()
+  const navigation = useNavigation<NavigationProp<AppStackParamList>>()
   const swipeableRef = useRef<Swipeable>(null)
   const containerStyles = [$container, applyTopRadius ? $topRadiusStyles : {}]
 
@@ -67,6 +70,19 @@ export const SpaceListItem = observer(({ id, color, name, isFavorite, applyTopRa
     }
   }, [])
 
+  const handleEditSpace = () => {
+    navigation.navigate("SpaceForm", {
+      isUpdateForm: true,
+      updatingSpaceData: {
+        color,
+        id,
+        isFavorite,
+        name,
+        parentSpace: null,
+      },
+    })
+  }
+
   return (
     <Swipeable
       ref={swipeableRef}
@@ -77,7 +93,12 @@ export const SpaceListItem = observer(({ id, color, name, isFavorite, applyTopRa
         <LeftSwipeActions isFavorite={isFavorite} progress={progress} dragX={dragX} />
       )}
       renderRightActions={(progress, dragX) => (
-        <RightSwipeActions progress={progress} dragX={dragX} onClick={handleDeleteSpace} />
+        <RightSwipeActions
+          progress={progress}
+          dragX={dragX}
+          onClickDelete={handleDeleteSpace}
+          onClickEdit={handleEditSpace}
+        />
       )}
       onSwipeableOpen={(direction) => {
         if (direction === "left") {
@@ -106,7 +127,7 @@ const $container: ViewStyle = {
 
 const $itemText: TextStyle = {
   fontFamily: typography.primary.normal,
-  fontSize: 18,
+  fontSize: 16,
   color: colors.text,
 }
 
@@ -116,5 +137,5 @@ const $topRadiusStyles: ViewStyle = {
 }
 
 const $icon: TextStyle = {
-  fontSize: 20,
+  fontSize: 18,
 }

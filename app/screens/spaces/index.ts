@@ -1,3 +1,3 @@
 export * from "./SpacesScreen"
-export * from "./CreateSpaceScreen"
+export * from "./SpaceFormScreen"
 export * from "./ColorScreen"
