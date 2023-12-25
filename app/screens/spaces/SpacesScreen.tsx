@@ -38,8 +38,6 @@ export const SpacesScreen: FC<SpacesScreenProps> = observer(function SpacesScree
   const _renderComponent = () => {
     return (
       <>
-        <Text text="Spaces" preset="heading" style={$topHeaderStyles} />
-
         {spacesStore.spaces.length === 0 ? (
           <View style={$noListContainer}>
             <NoListIcon />
@@ -52,6 +50,7 @@ export const SpacesScreen: FC<SpacesScreenProps> = observer(function SpacesScree
           </View>
         ) : (
           <View>
+            <Text text="Spaces" preset="heading" style={$topHeaderStyles} />
             {spacesStore.spaces.filter((space) => space.isFavorite).length > 0 && (
               <>
                 <Text style={$listHeader} preset="formLabel">
@@ -119,7 +118,7 @@ export const SpacesScreen: FC<SpacesScreenProps> = observer(function SpacesScree
         showsHorizontalScrollIndicator={false}
       />
 
-      {/* TODO: spaces don't get updated inside flash or flat list if we dont do this */}
+      {/* TODO: spaces don't get updated inside flash or flat list if we dont do this, need to fix this */}
       {spacesStore.spaces.map((space) => {
         return <React.Fragment key={space.id}></React.Fragment>
       })}

@@ -1,6 +1,6 @@
 import { ProgressBar } from "@ui-kitten/components"
 import { Screen, Text, TopHeader } from "app/components"
-import { FilterIcon, SearchIcon } from "app/components/icons"
+import { FilterIcon } from "app/components/icons"
 import { AppStackScreenProps } from "app/navigators"
 import { colors, spacing } from "app/theme"
 import { formatDate } from "app/utils/formatDate"
@@ -20,10 +20,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ na
     >
       <TopHeader
         navigate={navigation.navigate}
-        actions={[
-          { Icon: FilterIcon, onPress: () => {}, name: "Filter" },
-          { Icon: SearchIcon, onPress: () => {}, name: "Search" },
-        ]}
+        actions={[{ Icon: FilterIcon, onPress: () => {}, name: "Filter" }]}
       />
 
       <View>

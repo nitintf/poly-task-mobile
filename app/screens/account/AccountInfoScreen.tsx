@@ -44,9 +44,9 @@ export const AccountInfoScreen: FC<AccountInfoScreenProps> = observer(function A
         <Item
           LeftAccessory={NotificationBellIcon}
           text="Push Notification"
-          RightAccessory={() => (
+          RightAccessory={observer(() => (
             <Text style={$actionHelperText}>{settingsStore.pushNotificationDisplayText}</Text>
-          )}
+          ))}
           onPress={() => navigation.navigate("PushNotification")}
         />
         <Item
