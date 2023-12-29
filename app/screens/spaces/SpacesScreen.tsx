@@ -38,6 +38,7 @@ export const SpacesScreen: FC<SpacesScreenProps> = observer(function SpacesScree
   const _renderComponent = () => {
     return (
       <>
+        <Text text="Spaces" preset="heading" style={$topHeaderStyles} />
         {spacesStore.spaces.length === 0 ? (
           <View style={$noListContainer}>
             <NoListIcon />
@@ -50,7 +51,7 @@ export const SpacesScreen: FC<SpacesScreenProps> = observer(function SpacesScree
           </View>
         ) : (
           <View>
-            <Text text="Spaces" preset="heading" style={$topHeaderStyles} />
+            {/* <Text text="Spaces" preset="heading" style={$topHeaderStyles} /> */}
             {spacesStore.spaces.filter((space) => space.isFavorite).length > 0 && (
               <>
                 <Text style={$listHeader} preset="formLabel">

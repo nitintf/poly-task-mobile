@@ -1,7 +1,6 @@
 import { colors } from "app/theme"
 import * as React from "react"
-import { StyleProp, ViewStyle } from "react-native"
-import { Divider as DividerRN } from "@ui-kitten/components"
+import { StyleProp, ViewStyle, View } from "react-native"
 
 export interface DividerProps {
   style?: StyleProp<ViewStyle>
@@ -11,7 +10,7 @@ export const Divider = (props: DividerProps) => {
   const { style } = props
   const $styles = [$container, style]
 
-  return <DividerRN style={$styles} />
+  return <View style={$styles} />
 }
 
 const $container: ViewStyle = {

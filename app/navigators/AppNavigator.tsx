@@ -11,6 +11,7 @@ import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { AccountSettingNavigator } from "./AccountSettingsNavigator"
 import { HomeNavigator } from "./HomeNavigator"
 import { CreateSpaceNavigator } from "./CreateSpaceNavigator"
+import { BottomCreateTask } from "app/components"
 
 export type AppStackParamList = {
   Home: undefined
@@ -84,6 +85,7 @@ export const AppNavigator = observer(function AppNavigator(props: NavigationProp
       {...props}
     >
       <AppStack />
+      <BottomCreateTask />
     </NavigationContainer>
   )
 })

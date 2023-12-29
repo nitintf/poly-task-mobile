@@ -1,16 +1,26 @@
 import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet"
 import React, { PropsWithChildren, forwardRef, useEffect, useImperativeHandle, useRef } from "react"
-import { Keyboard, View, ViewStyle } from "react-native"
+import { Keyboard, StyleProp, View, ViewStyle } from "react-native"
 import { colors, spacing } from "app/theme"
 
 interface Props extends PropsWithChildren {
   onDismiss: () => void
   snapPoints?: Array<string>
   showIndicator?: boolean
+  containerStyles?: StyleProp<ViewStyle>
 }
 
 export const BottomSheet = forwardRef<BottomSheetModal, Props>(
-  ({ onDismiss, snapPoints = ["30%"], children, showIndicator = true }, ref) => {
+  (
+    {
+      onDismiss,
+      snapPoints = ["30%"],
+      children,
+      showIndicator = true,
+      containerStyles: $containerStylesOverride,
+    },
+    ref,
+  ) => {
     const sheet = useRef<BottomSheetModal>(null)
 
     useImperativeHandle(ref, () => sheet.current)
@@ -51,7 +61,9 @@ export const BottomSheet = forwardRef<BottomSheetModal, Props>(
         backgroundStyle={$root}
         handleIndicatorStyle={[$indicator, indicatorStyle]}
       >
-        <View style={[$container, containerStylesOverride]}>{children}</View>
+        <View style={[$container, containerStylesOverride, $containerStylesOverride]}>
+          {children}
+        </View>
       </BottomSheetModal>
     )
   },

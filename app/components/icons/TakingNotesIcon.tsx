@@ -1,3 +1,4 @@
+import { colors } from "app/theme"
 import * as React from "react"
 import { Dimensions } from "react-native"
 import Svg, { SvgProps, G, Path, Defs, LinearGradient, Stop, ClipPath } from "react-native-svg"
@@ -238,8 +239,8 @@ export const TakingNotesIcon = (props: SvgProps) => (
         y2={825.602}
         gradientUnits="userSpaceOnUse"
       >
-        <Stop stopColor="#0049b0" />
-        <Stop offset={1} stopColor="#0049b0" />
+        <Stop stopColor={colors.palette.main100} />
+        <Stop offset={1} stopColor={colors.palette.main100} />
       </LinearGradient>
       <LinearGradient
         id="d"
@@ -249,8 +250,8 @@ export const TakingNotesIcon = (props: SvgProps) => (
         y2={621.911}
         gradientUnits="userSpaceOnUse"
       >
-        <Stop stopColor="#0049b0" />
-        <Stop offset={1} stopColor="#0049b0" />
+        <Stop stopColor={colors.palette.main100} />
+        <Stop offset={1} stopColor={colors.palette.main100} />
       </LinearGradient>
       <LinearGradient
         id="e"
@@ -260,8 +261,8 @@ export const TakingNotesIcon = (props: SvgProps) => (
         y2={833.492}
         gradientUnits="userSpaceOnUse"
       >
-        <Stop stopColor="#0049b0" />
-        <Stop offset={1} stopColor="#0049b0" />
+        <Stop stopColor={colors.palette.main100} />
+        <Stop offset={1} stopColor={colors.palette.main100} />
       </LinearGradient>
       <LinearGradient
         id="f"
@@ -271,8 +272,8 @@ export const TakingNotesIcon = (props: SvgProps) => (
         y2={832.809}
         gradientUnits="userSpaceOnUse"
       >
-        <Stop stopColor="#0049b0" />
-        <Stop offset={1} stopColor="#0049b0" />
+        <Stop stopColor={colors.palette.main100} />
+        <Stop offset={1} stopColor={colors.palette.main100} />
       </LinearGradient>
       <LinearGradient
         id="g"
@@ -282,8 +283,8 @@ export const TakingNotesIcon = (props: SvgProps) => (
         y2={516.81}
         gradientUnits="userSpaceOnUse"
       >
-        <Stop stopColor="#0049b0" />
-        <Stop offset={1} stopColor="#0049b0" />
+        <Stop stopColor={colors.palette.main100} />
+        <Stop offset={1} stopColor={colors.palette.main100} />
       </LinearGradient>
       <LinearGradient
         id="h"
@@ -293,8 +294,8 @@ export const TakingNotesIcon = (props: SvgProps) => (
         y2={320.939}
         gradientUnits="userSpaceOnUse"
       >
-        <Stop stopColor="#0049b0" />
-        <Stop offset={1} stopColor="#0049b0" />
+        <Stop stopColor={colors.palette.main100} />
+        <Stop offset={1} stopColor={colors.palette.main100} />
       </LinearGradient>
       <ClipPath id="a">
         <Path fill="#fff" d="M0 0h960v960H0z" />

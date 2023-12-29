@@ -9,7 +9,12 @@ interface StatsScreenProps extends AppStackScreenProps<"Stats"> {}
 
 export const StatsScreen: FC<StatsScreenProps> = observer(function StatsScreen({ navigation }) {
   return (
-    <Screen contentContainerStyle={$screenContentContainer} style={$root} preset="auto">
+    <Screen
+      contentContainerStyle={$screenContentContainer}
+      style={$root}
+      preset="auto"
+      safeAreaEdges={["top"]}
+    >
       <TopHeader navigate={navigation.navigate} />
       <Text text="Stats" preset="heading" />
     </Screen>
@@ -21,6 +26,5 @@ const $root: ViewStyle = {
 }
 
 const $screenContentContainer: ViewStyle = {
-  paddingVertical: spacing.xxxl,
   paddingHorizontal: spacing.md,
 }

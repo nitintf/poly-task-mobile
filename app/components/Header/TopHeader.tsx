@@ -2,9 +2,9 @@ import React from "react"
 import { Pressable, View, ViewStyle } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { spacing } from "app/theme"
-import { Avatar } from "@ui-kitten/components"
 import { observer } from "mobx-react-lite"
 import { useStores } from "app/models"
+import { Avatar } from "react-native-ui-lib"
 
 type Actions = {
   Icon: React.ComponentType
@@ -23,7 +23,7 @@ export const TopHeader: React.FC<Props> = observer(({ navigate, actions }) => {
   return (
     <View style={$topContainer}>
       <TouchableOpacity onPress={() => navigate("AccountSetting")}>
-        <Avatar source={{ uri: authenticationStore.user?.picture }} size="small" />
+        <Avatar source={{ uri: authenticationStore.user?.picture }} size={35} />
       </TouchableOpacity>
       <View style={$iconContainer}>
         {actions?.map(({ name, Icon, onPress }) => {

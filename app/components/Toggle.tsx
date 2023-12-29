@@ -15,6 +15,7 @@ import Animated, { Easing, useAnimatedStyle, withTiming } from "react-native-rea
 import { colors, spacing } from "../theme"
 import { Text, TextProps } from "./Text"
 import { TickIcon } from "./icons"
+import * as Haptics from "expo-haptics"
 
 type Variants = "checkbox" | "switch" | "radio"
 
@@ -191,6 +192,7 @@ export function Toggle(props: ToggleProps) {
     if (disabled) return
     onValueChange?.(!value)
     onPress?.(e)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
   }
 
   return (

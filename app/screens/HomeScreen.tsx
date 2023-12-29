@@ -1,12 +1,11 @@
-import { ProgressBar } from "@ui-kitten/components"
 import { Screen, Text, TopHeader } from "app/components"
 import { FilterIcon } from "app/components/icons"
 import { AppStackScreenProps } from "app/navigators"
 import { colors, spacing } from "app/theme"
-import { formatDate } from "app/utils/formatDate"
 import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
-import { TextStyle, View, ViewStyle } from "react-native"
+import { ScrollView, TextStyle, ViewStyle } from "react-native"
+import { ProgressBar } from "react-native-ui-lib"
 
 interface HomeScreenProps extends AppStackScreenProps<"Home"> {}
 
@@ -15,7 +14,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ na
     <Screen
       contentContainerStyle={$screenContentContainer}
       style={$root}
-      preset="auto"
+      preset="fixed"
       safeAreaEdges={["top"]}
     >
       <TopHeader
@@ -23,13 +22,13 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ na
         actions={[{ Icon: FilterIcon, onPress: () => {}, name: "Filter" }]}
       />
 
-      <View>
-        <Text preset="formHelper" size="xs" style={$progressText}>
+      <ScrollView>
+        <Text preset="heading">Today</Text>
+        <Text preset="formLabel" size="xs" style={$progressText}>
           Your Progress
         </Text>
-        <Text preset="formLabel">Today, {formatDate(new Date().toISOString(), "MMM dd")}</Text>
-        <ProgressBar progress={0.5} style={$progressBar} />
-      </View>
+        <ProgressBar progress={55} progressColor={colors.palette.main100} style={$progressBar} />
+      </ScrollView>
     </Screen>
   )
 })
@@ -44,8 +43,11 @@ const $progressText: TextStyle = {
 
 const $progressBar: ViewStyle = {
   marginVertical: spacing.sm,
+  backgroundColor: colors.palette.neutral650,
+  height: 4,
 }
 
 const $screenContentContainer: ViewStyle = {
   paddingHorizontal: spacing.md,
+  flex: 1,
 }

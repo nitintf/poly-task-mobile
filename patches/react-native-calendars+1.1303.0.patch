@@ -1,0 +1,63 @@
+diff --git a/node_modules/react-native-calendars/src/calendar-list/index.js b/node_modules/react-native-calendars/src/calendar-list/index.js
+index e0449bc..1c2fdb1 100644
+--- a/node_modules/react-native-calendars/src/calendar-list/index.js
++++ b/node_modules/react-native-calendars/src/calendar-list/index.js
+@@ -34,16 +34,16 @@ const CalendarList = (props, ref) => {
+         }
+     }));
+     const {
+-    /** Calendar props */
+-    theme, current, firstDay, markedDates, headerStyle, onMonthChange, onVisibleMonthsChange, 
+-    /** CalendarList props */
+-    pastScrollRange = PAST_SCROLL_RANGE, futureScrollRange = FUTURE_SCROLL_RANGE, calendarHeight = CALENDAR_HEIGHT, calendarWidth = CALENDAR_WIDTH, calendarStyle, animateScroll = false, showScrollIndicator = false, staticHeader, 
+-    /** View props */
+-    testID, style: propsStyle, onLayout, removeClippedSubviews, 
+-    /** ScrollView props */
+-    horizontal = false, pagingEnabled, scrollEnabled = true, nestedScrollEnabled = true, scrollsToTop = false, keyExtractor = (_, index) => String(index), keyboardShouldPersistTaps, onScrollBeginDrag, onScrollEndDrag, onMomentumScrollBegin, onMomentumScrollEnd, 
+-    /** FlatList props */
+-    onEndReachedThreshold, onEndReached } = props;
++        /** Calendar props */
++        theme, current, firstDay, markedDates, headerStyle, onMonthChange, onVisibleMonthsChange,
++        /** CalendarList props */
++        pastScrollRange = PAST_SCROLL_RANGE, futureScrollRange = FUTURE_SCROLL_RANGE, calendarHeight = CALENDAR_HEIGHT, calendarWidth = CALENDAR_WIDTH, calendarStyle, animateScroll = false, showScrollIndicator = false, staticHeader,
++        /** View props */
++        testID, style: propsStyle, onLayout, removeClippedSubviews,
++        /** ScrollView props */
++        horizontal = false, pagingEnabled, scrollEnabled = true, nestedScrollEnabled = true, scrollsToTop = false, keyExtractor = (_, index) => String(index), keyboardShouldPersistTaps, onScrollBeginDrag, onScrollEndDrag, onMomentumScrollBegin, onMomentumScrollEnd,
++        /** FlatList props */
++        onEndReachedThreshold, onEndReached, ListHeaderComponent } = props;
+     const calendarProps = extractCalendarProps(props);
+     const headerProps = extractHeaderProps(props);
+     const calendarSize = horizontal ? calendarWidth : calendarHeight;
+@@ -158,13 +158,13 @@ const CalendarList = (props, ref) => {
+         const [year, month] = dateString.split('-');
+         const testId = `${testID}.item_${year}-${month}`;
+         return (<CalendarListItem {...calendarProps} testID={testId} markedDates={getMarkedDatesForItem(item)} item={item} style={calendarStyle}
+-        // @ts-expect-error - type mismatch - ScrollView's 'horizontal' is nullable
+-        horizontal={horizontal} calendarWidth={calendarWidth} calendarHeight={calendarHeight} scrollToMonth={scrollToMonth} visible={isDateInRange(item)}/>);
++            // @ts-expect-error - type mismatch - ScrollView's 'horizontal' is nullable
++            horizontal={horizontal} calendarWidth={calendarWidth} calendarHeight={calendarHeight} scrollToMonth={scrollToMonth} visible={isDateInRange(item)} />);
+     }, [horizontal, calendarStyle, calendarWidth, testID, getMarkedDatesForItem, isDateInRange, calendarProps]);
+     const renderStaticHeader = () => {
+         if (staticHeader && horizontal) {
+             return (<CalendarHeader {...headerProps} testID={`${testID}.staticHeader`} style={staticHeaderStyle} month={currentMonth} addMonth={addMonth} accessibilityElementsHidden={true} // iOS
+-             importantForAccessibility={'no-hide-descendants'} // Android
++                importantForAccessibility={'no-hide-descendants'} // Android
+             />);
+         }
+     };
+@@ -194,10 +194,10 @@ const CalendarList = (props, ref) => {
+         },
+     ]);
+     return (<View style={style.current.flatListContainer} testID={testID}>
+-      <FlatList 
+-    // @ts-expect-error
+-    ref={list} windowSize={shouldUseAndroidRTLFix ? pastScrollRange + futureScrollRange + 1 : undefined} style={listStyle} showsVerticalScrollIndicator={showScrollIndicator} showsHorizontalScrollIndicator={showScrollIndicator} data={items} renderItem={renderItem} getItemLayout={getItemLayout} initialNumToRender={range.current} initialScrollIndex={initialDateIndex} viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current} testID={`${testID}.list`} onLayout={onLayout} removeClippedSubviews={removeClippedSubviews} pagingEnabled={pagingEnabled} scrollEnabled={scrollEnabled} scrollsToTop={scrollsToTop} horizontal={horizontal} keyboardShouldPersistTaps={keyboardShouldPersistTaps} keyExtractor={keyExtractor} onEndReachedThreshold={onEndReachedThreshold} onEndReached={onEndReached} nestedScrollEnabled={nestedScrollEnabled} onMomentumScrollBegin={onMomentumScrollBegin} onMomentumScrollEnd={onMomentumScrollEnd} onScrollBeginDrag={onScrollBeginDrag} onScrollEndDrag={onScrollEndDrag}/>
+-      {renderStaticHeader()}
++        <FlatList
++            // @ts-expect-error
++            ref={list} windowSize={shouldUseAndroidRTLFix ? pastScrollRange + futureScrollRange + 1 : undefined} style={listStyle} showsVerticalScrollIndicator={showScrollIndicator} showsHorizontalScrollIndicator={showScrollIndicator} data={items} renderItem={renderItem} getItemLayout={getItemLayout} initialNumToRender={range.current} initialScrollIndex={initialDateIndex} viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current} testID={`${testID}.list`} onLayout={onLayout} removeClippedSubviews={removeClippedSubviews} pagingEnabled={pagingEnabled} scrollEnabled={scrollEnabled} scrollsToTop={scrollsToTop} horizontal={horizontal} keyboardShouldPersistTaps={keyboardShouldPersistTaps} keyExtractor={keyExtractor} onEndReachedThreshold={onEndReachedThreshold} onEndReached={onEndReached} nestedScrollEnabled={nestedScrollEnabled} onMomentumScrollBegin={onMomentumScrollBegin} onMomentumScrollEnd={onMomentumScrollEnd} onScrollBeginDrag={onScrollBeginDrag} onScrollEndDrag={onScrollEndDrag} ListHeaderComponent={ListHeaderComponent} />
++        {renderStaticHeader()}
+     </View>);
+ };
+ export default forwardRef(CalendarList);

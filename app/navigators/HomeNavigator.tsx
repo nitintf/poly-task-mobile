@@ -1,12 +1,13 @@
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { CompositeScreenProps } from "@react-navigation/native"
 import React from "react"
-import { TextStyle, ViewStyle } from "react-native"
+import { ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Screens from "../screens"
 import { colors, spacing } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { SpacesIcon, StatsIcon, TasksIcon, TodayIcon } from "app/components/icons"
+import { TabBarLabel } from "app/components/tabBarLabel"
 
 export type HomeTabParamList = {
   Today: undefined
@@ -37,7 +38,9 @@ export function HomeNavigator() {
         tabBarHideOnKeyboard: true,
         tabBarStyle: [$tabBar, { height: bottom + 55 }],
         tabBarItemStyle: $tabBarItem,
-        tabBarLabelStyle: $tabBarLabelStyles,
+        tabBarLabel: ({ focused, children }) => (
+          <TabBarLabel focused={focused}>{children}</TabBarLabel>
+        ),
       }}
     >
       <Tab.Screen
@@ -78,9 +81,4 @@ const $tabBar: ViewStyle = {
 
 const $tabBarItem: ViewStyle = {
   paddingTop: spacing.sm,
-}
-
-const $tabBarLabelStyles: TextStyle = {
-  // color: colors.palette.neutral600,
-  fontSize: 11,
 }

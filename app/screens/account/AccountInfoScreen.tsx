@@ -1,4 +1,3 @@
-import { Avatar } from "@ui-kitten/components"
 import { Text, Toggle, Screen, Group, Item } from "app/components"
 import {
   AppsIcon,
@@ -15,6 +14,7 @@ import { colors, spacing } from "app/theme"
 import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
 import { TextStyle, View, ViewStyle } from "react-native"
+import { Avatar } from "react-native-ui-lib"
 
 interface AccountInfoScreenProps extends AccountSettingScreenProps<"Account"> {}
 
@@ -34,7 +34,7 @@ export const AccountInfoScreen: FC<AccountInfoScreenProps> = observer(function A
   return (
     <Screen preset="scroll" contentContainerStyle={$containerStyle}>
       <View style={$detailsContainer}>
-        <Avatar source={{ uri: authenticationStore.user?.picture }} size="medium" />
+        <Avatar source={{ uri: authenticationStore.user?.picture }} size={50} />
         <View>
           <Text style={$accountText}>{authenticationStore.user.name}</Text>
           <Text style={[$emailText, $accountText]}>{authenticationStore.user.email}</Text>

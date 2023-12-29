@@ -3,14 +3,13 @@ import "./utils/ignoreWarnings"
 import React from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
 import * as Linking from "expo-linking"
-import { ApplicationProvider } from "@ui-kitten/components"
-import * as eva from "@eva-design/eva"
 import { useInitialRootStore } from "./models"
 import { AppNavigator } from "./navigators"
 import { ErrorBoundary } from "./screens/error/ErrorBoundary"
 import Config from "./config"
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { NotifierWrapper } from "react-native-notifier"
+import AppProviders from "./context/provider"
 if (__DEV__) {
   require("./devtools/ReactotronConfig.ts")
 }
@@ -56,13 +55,13 @@ function App(props: AppProps) {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
-        <ApplicationProvider {...eva} theme={eva.light}>
+        <AppProviders>
           <BottomSheetModalProvider>
             <NotifierWrapper>
               <AppNavigator linking={linking} />
             </NotifierWrapper>
           </BottomSheetModalProvider>
-        </ApplicationProvider>
+        </AppProviders>
       </ErrorBoundary>
     </SafeAreaProvider>
   )

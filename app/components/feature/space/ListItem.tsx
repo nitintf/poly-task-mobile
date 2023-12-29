@@ -1,9 +1,6 @@
-import React, { useCallback, useRef } from "react"
+import React, { useCallback, useMemo, useRef } from "react"
 import { Space, useStores } from "app/models"
 import { Alert, Text, TextStyle, ViewStyle } from "react-native"
-import { Swipeable } from "react-native-gesture-handler"
-import { LeftSwipeActions } from "./LeftSwipeActions"
-import { RightSwipeActions } from "./RightSwipeActions"
 import { colors, spacing, typography } from "app/theme"
 import * as Haptics from "expo-haptics"
 import { observer } from "mobx-react-lite"
@@ -12,6 +9,7 @@ import Animated, { FadeOutUp } from "react-native-reanimated"
 import { delay } from "app/utils/delay"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { AppStackParamList } from "app/navigators"
+import { Drawer, DrawerProps } from "react-native-ui-lib"
 
 interface Props extends Space {
   applyTopRadius: boolean
@@ -22,21 +20,21 @@ export const SpaceListItem = observer(({ id, color, name, isFavorite, applyTopRa
     authenticationStore: { user },
   } = useStores()
   const navigation = useNavigation<NavigationProp<AppStackParamList>>()
-  const swipeableRef = useRef<Swipeable>(null)
+  const swipeableRef = useRef(null)
   const containerStyles = [$container, applyTopRadius ? $topRadiusStyles : {}]
 
   const closeSwipeableAction = useCallback(() => {
     if (swipeableRef.current) {
-      swipeableRef.current.close()
+      swipeableRef.current.closeDrawer()
     }
   }, [])
 
-  const swipeFromRightOpen = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+  const swipeFromLeftOpen = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    handleToggleFavorite()
   }
 
-  const swipeFromLeftOpen = async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+  const handleToggleFavorite = async () => {
     closeSwipeableAction()
     await delay(500)
     spacesStore.toggleFavorite(id)
@@ -83,36 +81,42 @@ export const SpaceListItem = observer(({ id, color, name, isFavorite, applyTopRa
     })
   }
 
+  const drawerState: DrawerProps = useMemo(() => {
+    return {
+      rightItems: [
+        {
+          icon: require("../../../../assets/images/icons/edit.png"),
+          background: colors.palette.neutral550,
+          onPress: handleEditSpace,
+        },
+        {
+          icon: require("../../../../assets/images/icons/delete.png"),
+          background: colors.palette.angry500,
+          onPress: handleDeleteSpace,
+        },
+      ],
+      leftItem: {
+        icon: isFavorite
+          ? require("../../../../assets/images/icons/heart-slash.png")
+          : require("../../../../assets/images/icons/heart.png"),
+        background: isFavorite ? colors.palette.neutral300 : colors.palette.main100,
+        onPress: handleToggleFavorite,
+        keepOpen: false,
+      },
+      itemsIconSize: 24,
+      fullSwipeLeft: true,
+      disableHaptic: true,
+      onFullSwipeLeft: swipeFromLeftOpen,
+    }
+  }, [])
+
   return (
-    <Swipeable
-      ref={swipeableRef}
-      friction={2}
-      leftThreshold={90}
-      rightThreshold={41}
-      renderLeftActions={(progress, dragX) => (
-        <LeftSwipeActions isFavorite={isFavorite} progress={progress} dragX={dragX} />
-      )}
-      renderRightActions={(progress, dragX) => (
-        <RightSwipeActions
-          progress={progress}
-          dragX={dragX}
-          onClickDelete={handleDeleteSpace}
-          onClickEdit={handleEditSpace}
-        />
-      )}
-      onSwipeableOpen={(direction) => {
-        if (direction === "left") {
-          swipeFromLeftOpen()
-        } else {
-          swipeFromRightOpen()
-        }
-      }}
-    >
+    <Drawer ref={swipeableRef} {...drawerState}>
       <Animated.View exiting={FadeOutUp} style={containerStyles}>
         <Text style={[$icon, { color }]}>#</Text>
         <Text style={$itemText}>{name}</Text>
       </Animated.View>
-    </Swipeable>
+    </Drawer>
   )
 })
 
