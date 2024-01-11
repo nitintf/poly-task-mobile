@@ -7,17 +7,21 @@ import React, {
   useMemo,
   useState,
 } from "react"
+import { Keyboard } from "react-native"
 
 type TaskKeys = Exclude<keyof Task, "id">
 
 interface CreateTaskProps {
   isTaskModalOpen: boolean
   isDatePickerVisible: boolean
+  isSpacePickerVisible: boolean
   task: Task
   showCreateTaskModal: () => void
   hideCreateTaskModal: () => void
   openDatePicker: () => void
+  openSpacePicker: () => void
   closeDatePicker: () => void
+  closeSpacePicker: () => void
   updateTask: (key: TaskKeys, value: any) => void
 }
 
@@ -27,7 +31,8 @@ const initialTaskValue: Task = {
   description: "",
   id: 0,
   title: "",
-  date: "",
+  date: new Date().toISOString(),
+  space: null,
 }
 
 export const CreateTaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -35,6 +40,7 @@ export const CreateTaskProvider: React.FC<PropsWithChildren> = ({ children }) =>
   const [modalState, setModalState] = useState({
     isTaskModalOpen: false,
     isDatePickerOpen: false,
+    isSpacePickerOpen: false,
   })
 
   const showCreateTaskModal = useCallback(
@@ -42,7 +48,7 @@ export const CreateTaskProvider: React.FC<PropsWithChildren> = ({ children }) =>
     [],
   )
 
-  const hideCreateTaskModal = useCallback(() => {
+  const hideCreateTaskModal = useCallback(async () => {
     setTask(initialTaskValue)
     setModalState((prevState) => ({ ...prevState, isTaskModalOpen: false }))
   }, [])
@@ -52,22 +58,47 @@ export const CreateTaskProvider: React.FC<PropsWithChildren> = ({ children }) =>
   }, [])
 
   const openDatePicker = useCallback(() => {
-    setModalState({ isTaskModalOpen: false, isDatePickerOpen: true })
+    Keyboard.dismiss()
+    setModalState((prevState) => ({ ...prevState, isTaskModalOpen: false, isDatePickerOpen: true }))
   }, [])
 
   const closeDatePicker = useCallback(() => {
-    setModalState({ isTaskModalOpen: true, isDatePickerOpen: false })
+    setModalState((prevState) => ({
+      ...prevState,
+      isTaskModalOpen: true,
+      isDatePickerOpen: false,
+    }))
+  }, [])
+
+  const openSpacePicker = useCallback(() => {
+    Keyboard.dismiss()
+    setModalState((prevState) => ({
+      ...prevState,
+      isTaskModalOpen: false,
+      isSpacePickerOpen: true,
+    }))
+  }, [])
+
+  const closeSpacePicker = useCallback(() => {
+    setModalState((prevState) => ({
+      ...prevState,
+      isTaskModalOpen: true,
+      isSpacePickerOpen: false,
+    }))
   }, [])
 
   const contextValue = useMemo(
     () => ({
       isTaskModalOpen: modalState.isTaskModalOpen,
       isDatePickerVisible: modalState.isDatePickerOpen,
+      isSpacePickerVisible: modalState.isSpacePickerOpen,
       task,
       showCreateTaskModal,
       hideCreateTaskModal,
       openDatePicker,
       closeDatePicker,
+      openSpacePicker,
+      closeSpacePicker,
       updateTask,
     }),
     [
@@ -78,6 +109,8 @@ export const CreateTaskProvider: React.FC<PropsWithChildren> = ({ children }) =>
       updateTask,
       openDatePicker,
       closeDatePicker,
+      openSpacePicker,
+      closeSpacePicker,
     ],
   )
   return <CreateTaskContext.Provider value={contextValue}>{children}</CreateTaskContext.Provider>

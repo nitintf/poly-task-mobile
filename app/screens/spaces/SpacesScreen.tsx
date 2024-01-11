@@ -1,4 +1,4 @@
-import { Divider, Screen, Text, TopHeader } from "app/components"
+import { BottomCreateTask, Divider, Screen, Text, TopHeader } from "app/components"
 import { SpaceListItem } from "app/components/feature/space/ListItem"
 import { AddIcon } from "app/components/icons"
 import { Space, useStores } from "app/models"
@@ -123,6 +123,7 @@ export const SpacesScreen: FC<SpacesScreenProps> = observer(function SpacesScree
       {spacesStore.spaces.map((space) => {
         return <React.Fragment key={space.id}></React.Fragment>
       })}
+      <BottomCreateTask />
     </Screen>
   )
 })

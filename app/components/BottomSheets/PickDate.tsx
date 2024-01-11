@@ -12,6 +12,8 @@ import { Header } from "../Header"
 import { Button } from "../Button"
 import { useCreateTask } from "app/context/create-task"
 import { getCalendarListTheme, getMarkedDates } from "app/utils/calendar"
+import { TodayIcon } from "../icons"
+import { CouchIcon } from "../icons/CouchIcon"
 
 export const PickDateBottomSheet = () => {
   const { closeDatePicker, updateTask, task } = useCreateTask()
@@ -39,11 +41,7 @@ export const PickDateBottomSheet = () => {
   const theme = useMemo(() => getCalendarListTheme(), [])
 
   return (
-    <BottomSheet
-      onDismiss={closeDatePicker}
-      snapPoints={["86%"]}
-      containerStyles={$bottomSheetContainer}
-    >
+    <BottomSheet onDismiss={closeDatePicker} snapPoints={["86%"]}>
       <Header
         title="Select Date"
         containerStyle={$headerContainer}
@@ -55,7 +53,7 @@ export const PickDateBottomSheet = () => {
         }
         LeftActionComponent={
           <Button onPress={closeDatePicker} style={{ marginLeft: spacing.sm }} preset="link">
-            Cacel
+            Cancel
           </Button>
         }
       />
@@ -75,11 +73,17 @@ export const PickDateBottomSheet = () => {
 }
 
 const ListHeader = () => {
-  const { updateTask, closeDatePicker } = useCreateTask()
+  const { updateTask, closeDatePicker, task } = useCreateTask()
 
   const handleTomorrowPress = () => {
     const tomorrowDate = addDays(new Date(), 1)
     updateTask("date", tomorrowDate.toISOString())
+    closeDatePicker()
+  }
+
+  const handleTodayPress = () => {
+    const todayDate = new Date()
+    updateTask("date", todayDate.toISOString())
     closeDatePicker()
   }
 
@@ -89,26 +93,81 @@ const ListHeader = () => {
     closeDatePicker()
   }
 
+  const nextWeekendPress = () => {
+    const nextWeekSaturdayDate = addDays(addWeeks(startOfWeek(new Date()), 1), 6)
+    updateTask("date", nextWeekSaturdayDate.toISOString())
+    closeDatePicker()
+  }
+
+  let todayElement = (
+    <TouchableOpacity onPress={handleTodayPress} style={$headerRow}>
+      <View style={$headerItem}>
+        <TodayIcon isFocused={false} stroke={colors.palette.iosSwitchGreen} />
+        <Text preset="formLabel">Today</Text>
+      </View>
+    </TouchableOpacity>
+  )
+
+  let tomorrowElement = (
+    <TouchableOpacity onPress={handleTomorrowPress} style={$headerRow}>
+      <View style={$headerItem}>
+        <TomorrowIcon stroke={colors.palette.accent400} />
+        <Text preset="formLabel">Tomorrow</Text>
+      </View>
+      <Text preset="formHelper" style={$helperText}>
+        {format(addDays(new Date(), 1), "EEE")}
+      </Text>
+    </TouchableOpacity>
+  )
+
+  let nextWeekElement = (
+    <TouchableOpacity onPress={handleNextWeekPress} style={$headerRow}>
+      <View style={$headerItem}>
+        <NextWeekIcon stroke={colors.palette.main900} />
+        <Text preset="formLabel">Next Week</Text>
+      </View>
+      <Text preset="formHelper" style={$helperText}>
+        Mon
+      </Text>
+    </TouchableOpacity>
+  )
+
+  let nextWeekendElement = (
+    <TouchableOpacity onPress={nextWeekendPress} style={$headerRow}>
+      <View style={$headerItem}>
+        <CouchIcon fill={colors.palette.main900} height={26} />
+        <Text preset="formLabel">Next Weekend</Text>
+      </View>
+      <Text preset="formHelper" style={$helperText}>
+        Sat
+      </Text>
+    </TouchableOpacity>
+  )
+
+  const date = new Date(task.date)
+
+  if (format(date, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd")) {
+    todayElement = null
+  } else if (format(date, "yyyy-MM-dd") === format(addDays(new Date(), 1), "yyyy-MM-dd")) {
+    tomorrowElement = null
+  } else if (
+    format(date, "yyyy-MM-dd") ===
+    format(addDays(addWeeks(startOfWeek(new Date()), 1), 1), "yyyy-MM-dd")
+  ) {
+    nextWeekElement = null
+  } else if (
+    format(date, "yyyy-MM-dd") ===
+    format(addDays(addWeeks(startOfWeek(new Date()), 1), 6), "yyyy-MM-dd")
+  ) {
+    nextWeekendElement = null
+  }
+
   return (
     <View style={{ marginTop: spacing.lg }}>
-      <TouchableOpacity onPress={handleTomorrowPress} style={$headerRow}>
-        <View style={$headerItem}>
-          <TomorrowIcon stroke={colors.palette.accent400} />
-          <Text preset="formLabel">Tomorrow</Text>
-        </View>
-        <Text preset="formHelper" style={$helperText}>
-          {format(addDays(new Date(), 1), "EEE")}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleNextWeekPress} style={$headerRow}>
-        <View style={$headerItem}>
-          <NextWeekIcon stroke={colors.palette.main900} />
-          <Text preset="formLabel">Next Week</Text>
-        </View>
-        <Text preset="formHelper" style={$helperText}>
-          Mon
-        </Text>
-      </TouchableOpacity>
+      {todayElement}
+      {tomorrowElement}
+      {nextWeekElement}
+      {nextWeekendElement}
     </View>
   )
 }
@@ -181,8 +240,4 @@ const $headerContainer: ViewStyle = {
 
 const $headerStyles: ViewStyle = {
   height: 20,
-}
-
-const $bottomSheetContainer: ViewStyle = {
-  paddingHorizontal: 0,
 }

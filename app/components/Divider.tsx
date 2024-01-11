@@ -14,6 +14,7 @@ export const Divider = (props: DividerProps) => {
 }
 
 const $container: ViewStyle = {
+  width: "100%",
   height: 1,
   flex: 1,
   backgroundColor: colors.palette.neutral650,

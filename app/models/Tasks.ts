@@ -6,6 +6,7 @@ export const TaskModel = types.model("Task").props({
   title: types.maybe(types.string),
   description: types.maybe(types.string),
   date: types.maybe(types.string),
+  space: types.maybe(types.string),
 })
 
 export const TasksModel = types

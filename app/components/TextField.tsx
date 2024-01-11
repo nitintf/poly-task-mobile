@@ -1,4 +1,12 @@
-import React, { ComponentType, forwardRef, Ref, useImperativeHandle, useRef } from "react"
+import React, {
+  ComponentType,
+  forwardRef,
+  ForwardRefExoticComponent,
+  Ref,
+  RefAttributes,
+  useImperativeHandle,
+  useRef,
+} from "react"
 import {
   StyleProp,
   TextInput,
@@ -11,6 +19,8 @@ import {
 import { isRTL, translate } from "../i18n"
 import { colors, spacing, typography } from "../theme"
 import { Text, TextProps } from "./Text"
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet"
+import { NativeViewGestureHandlerProps } from "react-native-gesture-handler"
 
 export interface TextFieldAccessoryProps {
   style: StyleProp<any>
@@ -96,6 +106,8 @@ export interface TextFieldProps extends Omit<TextInputProps, "ref"> {
    */
   LeftAccessory?: ComponentType<TextFieldAccessoryProps>
 
+  isBottomSheetInput?: boolean
+
   variant?: "filled" | "underline"
 }
 
@@ -123,9 +135,10 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
     style: $inputStyleOverride,
     containerStyle: $containerStyleOverride,
     inputWrapperStyle: $inputWrapperStyleOverride,
+    isBottomSheetInput = false,
     ...TextInputProps
   } = props
-  const input = useRef<TextInput>()
+  const input = useRef<any>()
 
   const disabled = TextInputProps.editable === false || status === "disabled"
 
@@ -180,6 +193,8 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
 
   useImperativeHandle(ref, () => input.current)
 
+  const Input = isBottomSheetInput ? BottomSheetTextInput : TextInput
+
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -208,7 +223,7 @@ export const TextField = forwardRef(function TextField(props: TextFieldProps, re
           />
         )}
 
-        <TextInput
+        <Input
           ref={input}
           underlineColorAndroid={colors.transparent}
           textAlignVertical="top"

@@ -32,46 +32,48 @@ export function HomeNavigator() {
   const { bottom } = useSafeAreaInsets()
 
   return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarHideOnKeyboard: true,
-        tabBarStyle: [$tabBar, { height: bottom + 55 }],
-        tabBarItemStyle: $tabBarItem,
-        tabBarLabel: ({ focused, children }) => (
-          <TabBarLabel focused={focused}>{children}</TabBarLabel>
-        ),
-      }}
-    >
-      <Tab.Screen
-        name="Today"
-        component={Screens.HomeScreen}
-        options={{
-          tabBarIcon: ({ focused }) => <TodayIcon isFocused={focused} />,
+    <>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarHideOnKeyboard: true,
+          tabBarStyle: [$tabBar, { height: bottom + 55 }],
+          tabBarItemStyle: $tabBarItem,
+          tabBarLabel: ({ focused, children }) => (
+            <TabBarLabel focused={focused}>{children}</TabBarLabel>
+          ),
         }}
-      />
-      <Tab.Screen
-        name="Spaces"
-        component={Screens.SpacesScreen}
-        options={{
-          tabBarIcon: ({ focused }) => <SpacesIcon isFocused={focused} />,
-        }}
-      />
-      <Tab.Screen
-        name="Browse"
-        component={Screens.BrowseScreen}
-        options={{
-          tabBarIcon: ({ focused }) => <TasksIcon isFocused={focused} />,
-        }}
-      />
-      <Tab.Screen
-        name="Stats"
-        component={Screens.StatsScreen}
-        options={{
-          tabBarIcon: ({ focused }) => <StatsIcon isFocused={focused} />,
-        }}
-      />
-    </Tab.Navigator>
+      >
+        <Tab.Screen
+          name="Today"
+          component={Screens.HomeScreen}
+          options={{
+            tabBarIcon: ({ focused }) => <TodayIcon isFocused={focused} />,
+          }}
+        />
+        <Tab.Screen
+          name="Spaces"
+          component={Screens.SpacesScreen}
+          options={{
+            tabBarIcon: ({ focused }) => <SpacesIcon isFocused={focused} />,
+          }}
+        />
+        <Tab.Screen
+          name="Browse"
+          component={Screens.BrowseScreen}
+          options={{
+            tabBarIcon: ({ focused }) => <TasksIcon isFocused={focused} />,
+          }}
+        />
+        <Tab.Screen
+          name="Stats"
+          component={Screens.StatsScreen}
+          options={{
+            tabBarIcon: ({ focused }) => <StatsIcon isFocused={focused} />,
+          }}
+        />
+      </Tab.Navigator>
+    </>
   )
 }
 

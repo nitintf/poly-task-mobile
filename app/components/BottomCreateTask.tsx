@@ -7,9 +7,11 @@ import { useCreateTask } from "app/context/create-task"
 import { CreateTask } from "./BottomSheets/CreateTask"
 import * as Haptics from "expo-haptics"
 import { PickDateBottomSheet } from "./BottomSheets/PickDate"
+import { SpacePickerBottomSheet } from "./BottomSheets/SpacePicker"
 
 export const BottomCreateTask = observer(function BottomCreateTask() {
-  const { showCreateTaskModal, isTaskModalOpen, isDatePickerVisible } = useCreateTask()
+  const { showCreateTaskModal, isTaskModalOpen, isDatePickerVisible, isSpacePickerVisible } =
+    useCreateTask()
 
   const handleOnPress = React.useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
@@ -23,6 +25,7 @@ export const BottomCreateTask = observer(function BottomCreateTask() {
       </TouchableOpacity>
       {isTaskModalOpen && <CreateTask />}
       {isDatePickerVisible && <PickDateBottomSheet />}
+      {isSpacePickerVisible && <SpacePickerBottomSheet />}
     </>
   )
 })
@@ -30,7 +33,7 @@ export const BottomCreateTask = observer(function BottomCreateTask() {
 const $container: ViewStyle = {
   position: "absolute",
   borderRadius: 10000,
-  bottom: 105,
+  bottom: 10,
   right: spacing.md,
   alignItems: "center",
   justifyContent: "center",

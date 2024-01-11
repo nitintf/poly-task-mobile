@@ -3,7 +3,7 @@ import { format } from "date-fns"
 import { Theme } from "react-native-calendars/src/types"
 
 export const getMarkedDates = (date: string) => {
-  if (date === "") return {}
+  if (date === new Date().toISOString()) return {}
 
   return {
     [format(new Date(date), "yyyy-MM-dd")]: {

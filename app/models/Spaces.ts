@@ -109,6 +109,15 @@ export const SpacesModel = types
       self.newSpace = space
     },
   }))
+  .views((self) => ({
+    renderSpaceName(id: number) {
+      const index = self.spaces.findIndex((s) => s.id === id)
+      if (index >= 0) {
+        return self.spaces[index].name
+      }
+      return ""
+    },
+  }))
 
 export interface Space extends Instance<typeof SpaceModel> {}
 

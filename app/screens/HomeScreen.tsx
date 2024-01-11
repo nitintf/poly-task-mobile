@@ -1,4 +1,4 @@
-import { Screen, Text, TopHeader } from "app/components"
+import { BottomCreateTask, Screen, Text, TopHeader } from "app/components"
 import { FilterIcon } from "app/components/icons"
 import { AppStackScreenProps } from "app/navigators"
 import { colors, spacing } from "app/theme"
@@ -29,6 +29,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ na
         </Text>
         <ProgressBar progress={55} progressColor={colors.palette.main100} style={$progressBar} />
       </ScrollView>
+      <BottomCreateTask />
     </Screen>
   )
 })

@@ -47,13 +47,14 @@ export const BottomSheet = forwardRef<BottomSheetModal, Props>(
         ref={sheet}
         snapPoints={snapPoints}
         stackBehavior="replace"
-        enableDismissOnClose
+        enablePanDownToClose={false}
         keyboardBehavior="interactive"
         onDismiss={handleDismiss}
         backdropComponent={(props) => (
           <BottomSheetBackdrop
             {...props}
             appearsOnIndex={0}
+            pressBehavior={"collapse"}
             disappearsOnIndex={-1}
             onPress={handleDismiss}
           />
@@ -77,7 +78,7 @@ const $root: ViewStyle = {
 }
 
 const $container: ViewStyle = {
-  paddingHorizontal: spacing.xs,
+  paddingHorizontal: 0,
 }
 
 const $indicator: ViewStyle = {
