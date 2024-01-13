@@ -1,7 +1,7 @@
 import { Space } from "app/models"
 import { supabase } from "."
 import { logError } from "app/utils/handleNetworkErrors"
-import { mapToSpace } from "app/utils/space"
+import { serializeSpace } from "app/utils/serializers/serialize-space"
 import AppNotification from "app/utils/notification"
 
 export async function createSpace(space: Space, userId: string): Promise<Space | null> {
@@ -28,7 +28,7 @@ export async function createSpace(space: Space, userId: string): Promise<Space |
       title: "Space Created",
     })
 
-    return mapToSpace(data[0])
+    return serializeSpace(data[0])
   } catch (error) {
     logError(error)
     AppNotification.show({
@@ -50,7 +50,7 @@ export async function getSpaces(userId: string): Promise<Space[]> {
       return []
     }
 
-    const spaces = data.map(mapToSpace)
+    const spaces = data.map(serializeSpace)
     return spaces
   } catch (error) {
     logError(error)
@@ -87,7 +87,7 @@ export async function toggleFavoriteSpace(
       return null
     }
 
-    return mapToSpace(updatedSpace)
+    return serializeSpace(updatedSpace)
   } catch (error) {
     logError(error)
     return null
@@ -113,7 +113,7 @@ export async function updateSpace(space: Space): Promise<Space | null> {
       return null
     }
 
-    return mapToSpace(updatedSpace)
+    return serializeSpace(updatedSpace)
   } catch (error) {
     logError(error)
     return null

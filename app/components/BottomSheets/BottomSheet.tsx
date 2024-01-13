@@ -54,7 +54,6 @@ export const BottomSheet = forwardRef<BottomSheetModal, Props>(
           <BottomSheetBackdrop
             {...props}
             appearsOnIndex={0}
-            pressBehavior={"collapse"}
             disappearsOnIndex={-1}
             onPress={handleDismiss}
           />

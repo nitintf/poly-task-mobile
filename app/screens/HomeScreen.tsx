@@ -1,5 +1,6 @@
 import { BottomCreateTask, Screen, Text, TopHeader } from "app/components"
 import { FilterIcon } from "app/components/icons"
+import { useStores } from "app/models"
 import { AppStackScreenProps } from "app/navigators"
 import { colors, spacing } from "app/theme"
 import { observer } from "mobx-react-lite"
@@ -10,6 +11,11 @@ import { ProgressBar } from "react-native-ui-lib"
 interface HomeScreenProps extends AppStackScreenProps<"Home"> {}
 
 export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ navigation }) {
+  const {
+    tasksStore: { tasks },
+  } = useStores()
+
+  console.log("tasks :>> ", JSON.stringify(tasks, null, 2))
   return (
     <Screen
       contentContainerStyle={$screenContentContainer}

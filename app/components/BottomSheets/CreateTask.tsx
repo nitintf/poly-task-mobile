@@ -19,9 +19,18 @@ export const CreateTask: React.FC = () => {
   const { task, updateTask, hideCreateTaskModal, openDatePicker, openSpacePicker } = useCreateTask()
   const {
     spacesStore: { renderSpaceName },
+    tasksStore: { addTask },
+    authenticationStore: { user },
   } = useStores()
 
   const bottomSheetRef = useRef<BottomSheetModal>(null)
+
+  const handleOnSubmit = () => {
+    if (task.title.trim().length === 0) return
+
+    bottomSheetRef.current?.close()
+    addTask(task, user.id)
+  }
 
   return (
     <BottomSheet
@@ -109,7 +118,11 @@ export const CreateTask: React.FC = () => {
             {task.space ? renderSpaceName(Number(task.space)) : "Space"}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={$buttonStyle}>
+        <TouchableOpacity
+          style={[$buttonStyle, ...[task.title.trim().length === 0 ? $disabledButtonStyle : {}]]}
+          activeOpacity={0.5}
+          onPress={handleOnSubmit}
+        >
           <UpArrowIcon fill={colors.text} width={18} height={18} />
         </TouchableOpacity>
       </View>
@@ -150,6 +163,10 @@ const $buttonStyle: ViewStyle = {
   borderRadius: 100,
   alignItems: "center",
   justifyContent: "center",
+}
+
+const $disabledButtonStyle: ViewStyle = {
+  opacity: 0.5,
 }
 
 const $buttonContainer: ViewStyle = {

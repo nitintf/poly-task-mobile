@@ -1,9 +1,9 @@
 import { Task } from "app/models"
 import { supabase } from "."
 import { logError } from "app/utils/handleNetworkErrors"
-import { mapToTask } from "app/utils/task"
+import { serializeTask } from "app/utils/serializers/serialize-task"
 
-export const createTask = async (task: Task): Promise<Task | null> => {
+export const createTask = async (task: Task, userId: string): Promise<Task | null> => {
   try {
     const { data, error } = await supabase
       .from("tasks")
@@ -13,6 +13,7 @@ export const createTask = async (task: Task): Promise<Task | null> => {
           description: task.description,
           date: task.date,
           space: task.space,
+          user_id: userId,
         },
       ])
       .select()
@@ -23,7 +24,7 @@ export const createTask = async (task: Task): Promise<Task | null> => {
       return null
     }
 
-    return mapToTask(data)
+    return serializeTask(data)
   } catch (error) {
     logError(error)
     return null
@@ -42,7 +43,7 @@ export async function getTasks(userId: string): Promise<Task[]> {
       return []
     }
 
-    return data.map(mapToTask)
+    return data.map(serializeTask)
   } catch (error) {
     logError(error)
     return []
@@ -61,7 +62,7 @@ export async function getTasksBySpace(spaceId: string): Promise<Task[]> {
       return []
     }
 
-    return data.map(mapToTask)
+    return data.map(serializeTask)
   } catch (error) {
     logError(error)
     return []
@@ -99,7 +100,7 @@ export async function updateTask(task: Task): Promise<Task | null> {
       return null
     }
 
-    return mapToTask(updatedTask)
+    return serializeTask(updatedTask)
   } catch (error) {
     logError(error)
     return null
@@ -123,7 +124,7 @@ export async function toggleCompletedTask(
       return null
     }
 
-    return mapToTask(updatedTask)
+    return serializeTask(updatedTask)
   } catch (error) {
     logError(error)
     return null
